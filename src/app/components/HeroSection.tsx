@@ -7,6 +7,7 @@ import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useRouter } from "next/navigation";
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -18,7 +19,9 @@ const features = [
   { icon: <WorkspacePremiumOutlinedIcon />, label: "Certificate Provided" },
 ];
 
+
 export default function HeroSection() {
+    const router = useRouter();
   return (
     <Box
       component="section"
@@ -127,6 +130,7 @@ export default function HeroSection() {
           </Stack>
 
           <MotionButton
+            onClick={() => router.push("/#courses")}
             whileHover={{ scale: 1.03, boxShadow: "0 8px 20px rgba(22,163,74,0.3)" }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}

@@ -104,7 +104,7 @@ const generalInfo = [
 
 export default function SaturdayWorkshops() {
   return (
-    <div>
+    <div id="courses">
       <Box sx={{ py: { xs: 3, md: 6 }, px: { xs: 2, md: 6 } }}>
         {/* Section heading with decorative lines */}
         <Stack

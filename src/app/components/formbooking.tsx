@@ -3,10 +3,12 @@
 import { useState, type ChangeEvent } from "react";
 import * as yup from "yup";
 import {
+  Alert,
   Box,
   Button,
   Card,
   CardContent,
+  Collapse,
   Grid,
   MenuItem,
   Stack,
@@ -115,8 +117,15 @@ export default function FormBooking() {
   const [formData, setFormData] = useState<FormState>(initialFormState);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [alert, setAlert] = useState<{
+    open: boolean;
+    severity: "success" | "error";
+    message: string;
+  }>({
+    open: false,
+    severity: "success",
+    message: "",
+  });
 
   const handleChange =
     (field: keyof FormState) =>
@@ -138,38 +147,71 @@ export default function FormBooking() {
     };
 
   const handleSubmit = async () => {
-    setSubmitError("");
+    setAlert({
+      open: false,
+      severity: "success",
+      message: "",
+    });
 
     try {
+      // Validate form
       await validationSchema.validate(formData, { abortEarly: false });
       setErrors({});
     } catch (validationErr: unknown) {
       if (validationErr instanceof yup.ValidationError) {
         const fieldErrors: FormErrors = {};
+
         validationErr.inner.forEach((issue) => {
           if (issue.path && !fieldErrors[issue.path as keyof FormState]) {
             fieldErrors[issue.path as keyof FormState] = issue.message;
           }
         });
+
         setErrors(fieldErrors);
       }
+
       return;
     }
 
     setSubmitting(true);
-    try {
-      // Replace this with your actual API call, e.g.:
-      // await fetch("/api/bookings", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // });
-      await new Promise((resolve) => setTimeout(resolve, 800));
 
-      setSubmitted(true);
+    try {
+      const response = await fetch("/api/student-registration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setAlert({
+          open: true,
+          severity: "error",
+          message: result.message,
+        });
+
+        return;
+      }
+
+      setAlert({
+        open: true,
+        severity: "success",
+        message: result.message,
+      });
+
       setFormData(initialFormState);
+      setErrors({});
     } catch (err) {
-      setSubmitError("Something went wrong. Please try again.");
+      console.error(err);
+
+      setAlert({
+        open: true,
+        severity: "error",
+        message: "Something went wrong. Please try again.",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -184,8 +226,7 @@ export default function FormBooking() {
       }}
     >
       <Grid container spacing={2.5}>
-        {/* LEFT CARD */}
-
+        `{/* LEFT CARD */}
         <Grid size={{ xs: 12, lg: 7.5 }}>
           <Card
             elevation={0}
@@ -213,37 +254,21 @@ export default function FormBooking() {
                 </Typography>
               </Stack>
 
-              {submitted && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    mb: 1.5,
-                    p: 1.2,
-                    borderRadius: 1.5,
-                    background: "var(--primary-light)",
-                    color: "var(--primary)",
-                    fontWeight: 600,
-                  }}
+              {/* Success / Error Alert */}
+              <Collapse in={alert.open}>
+                <Alert
+                  severity={alert.severity}
+                  sx={{ mb: 2 }}
+                  onClose={() =>
+                    setAlert((prev) => ({
+                      ...prev,
+                      open: false,
+                    }))
+                  }
                 >
-                  Booking submitted! We will be in touch soon.
-                </Typography>
-              )}
-
-              {submitError && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    mb: 1.5,
-                    p: 1.2,
-                    borderRadius: 1.5,
-                    background: "#fdecea",
-                    color: "#b3261e",
-                    fontWeight: 600,
-                  }}
-                >
-                  {submitError}
-                </Typography>
-              )}
+                  {alert.message}
+                </Alert>
+              </Collapse>
 
               <Grid container spacing={1.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -420,9 +445,7 @@ export default function FormBooking() {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* RIGHT CARD */}
-
+        `{/* RIGHT CARD */}
         <Grid size={{ xs: 12, lg: 4.5 }}>
           <Card
             elevation={0}

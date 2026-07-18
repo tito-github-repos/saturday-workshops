@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppBar, Toolbar, Box, Typography, Button, Stack } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SchoolIcon from "@mui/icons-material/School";
@@ -19,6 +19,7 @@ const MotionBox = motion(Box);
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -138,6 +139,7 @@ export default function Header() {
 
         {/* CTA */}
         <MotionButton
+          onClick={() => router.push("/appointment")}
           whileHover={{ scale: 1.04, boxShadow: "0 8px 20px rgba(22,163,74,0.35)" }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}

@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Appointment", href: "/appointment" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const MotionButton = motion(Button);

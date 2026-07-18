@@ -226,8 +226,24 @@ export default function FormBooking() {
       }}
     >
       <Grid container spacing={2.5}>
-        `{/* LEFT CARD */}
+
+        {/* LEFT CARD */}
         <Grid size={{ xs: 12, lg: 7.5 }}>
+           {/* Success / Error Alert */}
+              <Collapse in={alert.open}>
+                <Alert
+                  severity={alert.severity}
+                  sx={{ mb: 2 }}
+                  onClose={() =>
+                    setAlert((prev) => ({
+                      ...prev,
+                      open: false,
+                    }))
+                  }
+                >
+                  {alert.message}
+                </Alert>
+              </Collapse>
           <Card
             elevation={0}
             sx={{
@@ -254,21 +270,7 @@ export default function FormBooking() {
                 </Typography>
               </Stack>
 
-              {/* Success / Error Alert */}
-              <Collapse in={alert.open}>
-                <Alert
-                  severity={alert.severity}
-                  sx={{ mb: 2 }}
-                  onClose={() =>
-                    setAlert((prev) => ({
-                      ...prev,
-                      open: false,
-                    }))
-                  }
-                >
-                  {alert.message}
-                </Alert>
-              </Collapse>
+             
 
               <Grid container spacing={1.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -445,7 +447,7 @@ export default function FormBooking() {
             </CardContent>
           </Card>
         </Grid>
-        `{/* RIGHT CARD */}
+        {/* RIGHT CARD */}
         <Grid size={{ xs: 12, lg: 4.5 }}>
           <Card
             elevation={0}

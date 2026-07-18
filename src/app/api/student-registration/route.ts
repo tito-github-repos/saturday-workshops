@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         message: "Registration submitted successfully.",
         data: registration,
       },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.error("Student Registration Error:", error);

@@ -90,6 +90,15 @@ const initialFormState: FormState = {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
+// Returns today's date in YYYY-MM-DD format (required for input[type=date] min attr)
+const getTodayDateString = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 // Message is intentionally left out of "required" fields - it's optional.
 const validationSchema = yup.object({
   name: yup
@@ -108,7 +117,19 @@ const validationSchema = yup.object({
     .required("Phone number is required")
     .matches(/^\d+$/, "Phone number should only contain numbers")
     .length(10, "Phone number must be exactly 10 digits"),
-  date: yup.string().trim().required("Please select a date"),
+ date: yup
+    .string()
+    .trim()
+    .required("Please select a date")
+    .test(
+      "not-in-past",
+      "Please select today or a future date",
+      (value) => {
+        if (!value) return false;
+        const todayStr = getTodayDateString();
+        return value >= todayStr; // safe string comparison since format is YYYY-MM-DD
+      }
+    ),
   course: yup.string().trim().required("Please select a course"),
   message: yup.string().optional(),
 });
@@ -351,6 +372,7 @@ export default function FormBooking() {
                     helperText={errors.date}
                     slotProps={{
                       inputLabel: { shrink: true },
+                      htmlInput: { min: getTodayDateString() },
                       input: {
                         startAdornment: (
                           <CalendarTodayOutlinedIcon

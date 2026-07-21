@@ -31,9 +31,13 @@ export default function Header() {
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       elevation={0}
       sx={{
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         bgcolor: "var(--white)",
         color: "var(--black)",
         border: "none",
@@ -58,9 +62,17 @@ export default function Header() {
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+          }}
         >
-          <motion.div whileHover={{ rotate: -8, scale: 1.06 }} transition={{ type: "spring", stiffness: 300 }}>
+          <motion.div
+            whileHover={{ rotate: -8, scale: 1.06 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <Box
               sx={{
                 width: 40,
@@ -76,7 +88,10 @@ export default function Header() {
               <SchoolIcon sx={{ color: "var(--white)", fontSize: 22 }} />
             </Box>
           </motion.div>
-          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: "-0.3px" }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, letterSpacing: "-0.3px" }}
+          >
             Saturday{" "}
             <Box component="span" sx={{ color: "var(--primary)" }}>
               Workshops
@@ -140,7 +155,10 @@ export default function Header() {
         {/* CTA */}
         <MotionButton
           onClick={() => router.push("/appointment")}
-          whileHover={{ scale: 1.04, boxShadow: "0 8px 20px rgba(22,163,74,0.35)" }}
+          whileHover={{
+            scale: 1.04,
+            boxShadow: "0 8px 20px rgba(22,163,74,0.35)",
+          }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
           variant="contained"

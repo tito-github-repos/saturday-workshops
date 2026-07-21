@@ -19,9 +19,8 @@ const features = [
   { icon: <WorkspacePremiumOutlinedIcon />, label: "Certificate Provided" },
 ];
 
-
 export default function HeroSection() {
-    const router = useRouter();
+  const router = useRouter();
   return (
     <Box
       component="section"
@@ -73,11 +72,11 @@ export default function HeroSection() {
               color: "var(--black)",
             }}
           >
-            Learn. Practice.
-            <br />
+            Where The Focus Goes,{" "}
             <Box component="span" sx={{ color: "var(--primary)" }}>
-              Excel.
+              Energy{" "}
             </Box>
+            Flows.
           </Typography>
 
           <Typography
@@ -90,12 +89,16 @@ export default function HeroSection() {
               lineHeight: 1.5,
             }}
           >
-            Weekend workshops that empower you with practical skills and real-world confidence.
+            Weekend workshops that empower you with practical skills and
+            real-world confidence.
           </Typography>
 
           <Stack direction="row" sx={{ alignItems: "flex-start", mb: 3.5 }}>
             {features.map((f, i) => (
-              <Box key={f.label} sx={{ display: "flex", alignItems: "flex-start" }}>
+              <Box
+                key={f.label}
+                sx={{ display: "flex", alignItems: "flex-start" }}
+              >
                 <MotionBox
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -108,7 +111,13 @@ export default function HeroSection() {
                     textAlign: "center",
                   }}
                 >
-                  <Box sx={{ color: "var(--primary)", mb: 0.75, "& svg": { fontSize: 22 } }}>
+                  <Box
+                    sx={{
+                      color: "var(--primary)",
+                      mb: 0.75,
+                      "& svg": { fontSize: 22 },
+                    }}
+                  >
                     {f.icon}
                   </Box>
                   <Typography
@@ -123,7 +132,11 @@ export default function HeroSection() {
                   </Typography>
                 </MotionBox>
                 {i < features.length - 1 && (
-                  <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)" }} />
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)" }}
+                  />
                 )}
               </Box>
             ))}
@@ -131,7 +144,10 @@ export default function HeroSection() {
 
           <MotionButton
             onClick={() => router.push("/#courses")}
-            whileHover={{ scale: 1.03, boxShadow: "0 8px 20px rgba(22,163,74,0.3)" }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 8px 20px rgba(22,163,74,0.3)",
+            }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             variant="contained"

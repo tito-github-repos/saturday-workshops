@@ -1,26 +1,28 @@
 "use client";
 
-import {
-  Box,
-  Typography,
-  Stack,
-  IconButton,
-  Fab,
-} from "@mui/material";
+import { Box, Typography, Stack, IconButton, Fab } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const socials = [
-  { icon: <FacebookIcon fontSize="small" />, href: "#" },
-  { icon: <InstagramIcon fontSize="small" />, href: "#" },
-  { icon: <LinkedInIcon fontSize="small" />, href: "#" },
+  {
+    icon: <FacebookIcon fontSize="small" />,
+    href: "https://www.facebook.com/",
+  },
+  {
+    icon: <InstagramIcon fontSize="small" />,
+    href: "https://www.instagram.com/",
+  },
+  {
+    icon: <LinkedInIcon fontSize="small" />,
+    href: "https://www.linkedin.com/company/90765852/admin/dashboard/",
+  },
 ];
 
 export default function Footer() {
-  const scrollToTop = () =>
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <Box
@@ -56,6 +58,8 @@ export default function Footer() {
               <IconButton
                 key={i}
                 href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 size="small"
                 sx={{
                   bgcolor: "rgba(255,255,255,0.08)",

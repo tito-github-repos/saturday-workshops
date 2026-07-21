@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import {
+  sendAdminNotification,
+  sendStudentConfirmation,
+} from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,7 +30,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create Registration
+    // Save registration
     const registration = await prisma.studentRegistration.create({
       data: {
         fullName: name.trim(),
@@ -37,6 +41,37 @@ export async function POST(req: NextRequest) {
         message: message?.trim() || null,
       },
     });
+
+    // Format workshop date for email
+    const formattedDate = new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+
+    // Send emails (doesn't fail the registration if email sending fails)
+    try {
+      await Promise.all([
+        sendStudentConfirmation({
+          name: registration.fullName,
+          email: registration.email,
+          course: registration.course,
+          workshopDate: formattedDate,
+        }),
+
+        sendAdminNotification({
+          name: registration.fullName,
+          email: registration.email,
+          phone: registration.phoneNumber,
+          course: registration.course,
+          workshopDate: formattedDate,
+          message: registration.message ?? undefined,
+        }),
+      ]);
+    } catch (emailError) {
+      console.error("Email Sending Error:", emailError);
+      // Registration is already saved, so don't return an error.
+    }
 
     return NextResponse.json(
       {
@@ -49,7 +84,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Student Registration Error:", error);
 
-    // Duplicate Email
+    // Duplicate email
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

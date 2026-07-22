@@ -71,11 +71,11 @@ export default function HeroSection() {
               color: "var(--black)",
             }}
           >
-            Where The Focus Goes,{" "}
+            Where The Focus Goes,
+            <br />
             <Box component="span" sx={{ color: "var(--primary)" }}>
-              Energy{" "}
+              Energy Flows.
             </Box>
-            Flows.
           </Typography>
 
           <Typography
@@ -88,8 +88,7 @@ export default function HeroSection() {
               lineHeight: 1.5,
             }}
           >
-            Weekend workshops that empower you with practical skills and
-            real-world confidence.
+            Weekend workshops that empower you with practical skills and real-world confidence.
           </Typography>
 
           <Box
@@ -120,13 +119,7 @@ export default function HeroSection() {
                     textAlign: "center",
                   }}
                 >
-                  <Box
-                    sx={{
-                      color: "var(--primary)",
-                      mb: 0.75,
-                      "& svg": { fontSize: 22 },
-                    }}
-                  >
+                  <Box sx={{ color: "var(--primary)", mb: 0.75, "& svg": { fontSize: 22 } }}>
                     {f.icon}
                   </Box>
                   <Typography
@@ -160,10 +153,7 @@ export default function HeroSection() {
 
           <MotionButton
             onClick={() => router.push("/#courses")}
-            whileHover={{
-              scale: 1.03,
-              boxShadow: "0 8px 20px rgba(22,163,74,0.3)",
-            }}
+            whileHover={{ scale: 1.03, boxShadow: "0 8px 20px rgba(22,163,74,0.3)" }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             variant="contained"

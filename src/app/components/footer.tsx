@@ -91,9 +91,6 @@ function SocialIcons() {
 }
 
 export default function Footer() {
-  const scrollToTop = () =>
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
   return (
     <Box
       component="footer"
@@ -156,22 +153,6 @@ export default function Footer() {
           <Typography sx={{ fontSize: "12px", opacity: 0.45 }}>
             © 2025 Saturday Workshops. All Rights Reserved.
           </Typography>
-          <Stack direction="row" spacing={1.5}>
-            {socials.map((s, i) => (
-              <IconButton
-                key={i}
-                href={s.href}
-                size="small"
-                sx={{
-                  bgcolor: "rgba(255,255,255,0.08)",
-                  color: "var(--white)",
-                  "&:hover": { bgcolor: "var(--primary)" },
-                }}
-              >
-                {s.icon}
-              </IconButton>
-            ))}
-          </Stack>
         </Stack>
       </Box>
     </Box>

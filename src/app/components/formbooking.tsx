@@ -240,6 +240,7 @@ export default function FormBooking() {
 
   return (
     <Box
+      id="appointment"
       sx={{
         py: { xs: 3, md: 3 },
         px: { xs: 2, md: 6 },

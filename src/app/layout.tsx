@@ -19,7 +19,7 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider>
           <Header />
-          <main>{children}</main>
+          <main style={{ paddingTop: "65px" }}>{children}</main>
           <Footer />
         </AppRouterCacheProvider>
       </body>

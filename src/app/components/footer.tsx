@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Box, Typography, Stack, IconButton, Divider } from "@mui/material";
+import { Box, Typography, Stack, IconButton, Fab } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -16,6 +17,22 @@ const legalLinks = [
   { label: "Terms & Conditions", href: "/terms-and-conditions" },
   { label: "Privacy Policy", href: "/privacy-policy" },
 ];
+  {
+    icon: <FacebookIcon fontSize="small" />,
+    href: "https://www.facebook.com/",
+  },
+  {
+    icon: <InstagramIcon fontSize="small" />,
+    href: "https://www.instagram.com/",
+  },
+  {
+    icon: <LinkedInIcon fontSize="small" />,
+    href: "https://www.linkedin.com/company/90765852/admin/dashboard/",
+  },
+];
+
+export default function Footer() {
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 function LegalLinks({ fontSize = "13.5px" }: { fontSize?: string }) {
   return (
@@ -153,6 +170,24 @@ export default function Footer() {
           <Typography sx={{ fontSize: "12px", opacity: 0.45 }}>
             © 2025 Saturday Workshops. All Rights Reserved.
           </Typography>
+          <Stack direction="row" spacing={1.5}>
+            {socials.map((s, i) => (
+              <IconButton
+                key={i}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+                sx={{
+                  bgcolor: "rgba(255,255,255,0.08)",
+                  color: "var(--white)",
+                  "&:hover": { bgcolor: "var(--primary)" },
+                }}
+              >
+                {s.icon}
+              </IconButton>
+            ))}
+          </Stack>
         </Stack>
       </Box>
     </Box>

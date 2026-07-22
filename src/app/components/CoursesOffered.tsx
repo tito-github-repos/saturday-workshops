@@ -26,7 +26,7 @@ const workshops = [
     title: "English Language Design",
     titleColor: "var(--primary)",
     subTitleColor: "rgb(107, 114, 128)",
-    description: "Improve your grammar, writing and sentence structure.",
+    description: "Forms. Functions. Structures.",
     learnItems: [
       "Grammatical Units",
       "Sentence Elements",
@@ -51,7 +51,7 @@ const workshops = [
     title: "Essential Math Skills",
     titleColor: "var(--secondary)",
     subTitleColor: "rgb(107, 114, 128)",
-    description: "Strengthen your basics and solve problems with confidence.",
+    description: "Arithmetic. Algebra. Geometry.",
     learnItems: [
       "Simple & Compound Interest",
       "Present & Future Value",

@@ -10,7 +10,9 @@ export default function Home() {
       <HeroSection />
       <CoursesOffered />
       <MentalCalisthenics />
-      <FormBooking />
+      <div id="appointment-form">
+        <FormBooking />
+      </div>
       <GetInTouch />
     </>
   );

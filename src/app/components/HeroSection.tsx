@@ -27,11 +27,11 @@ export default function HeroSection() {
       sx={{
         position: "relative",
         bgcolor: "var(--white)",
-        overflow: "hidden",
+        overflowX: "hidden",
+        width: "100%",
+        maxWidth: "100vw",
       }}
     >
-      {/* Soft background wash behind the whole right side - this is what creates
-          the smooth white -> pale green transition instead of a hard circle */}
       <Box
         sx={{
           position: "absolute",
@@ -57,26 +57,25 @@ export default function HeroSection() {
           py: { xs: 5, md: 7 },
         }}
       >
-        {/* Left text content */}
         <MotionBox
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          sx={{ flex: 1, maxWidth: { md: "440px" } }}
+          sx={{ flex: 1, minWidth: 0, width: "100%", maxWidth: { md: "440px" } }}
         >
           <Typography
             sx={{
-              fontSize: { xs: "2.2rem", md: "2.7rem" },
+              fontSize: { xs: "1.9rem", sm: "2.2rem", md: "2.7rem" },
               fontWeight: 800,
               lineHeight: 1.15,
               color: "var(--black)",
             }}
           >
-            Where The Focus Goes,{" "}
+            Where The Focus Goes,
+            <br />
             <Box component="span" sx={{ color: "var(--primary)" }}>
-              Energy{" "}
+              Energy Flows.
             </Box>
-            Flows.
           </Typography>
 
           <Typography
@@ -89,15 +88,24 @@ export default function HeroSection() {
               lineHeight: 1.5,
             }}
           >
-            Weekend workshops that empower you with practical skills and
-            real-world confidence.
+            Weekend workshops that empower you with practical skills and real-world confidence.
           </Typography>
 
-          <Stack direction="row" sx={{ alignItems: "flex-start", mb: 3.5 }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, auto)" },
+              columnGap: { xs: 2, md: 0 },
+              rowGap: { xs: 2.5, md: 0 },
+              mb: 3.5,
+              width: "100%",
+            }}
+          >
             {features.map((f, i) => (
-              <Box
+              <Stack
                 key={f.label}
-                sx={{ display: "flex", alignItems: "flex-start" }}
+                direction="row"
+                sx={{ alignItems: "flex-start", minWidth: 0 }}
               >
                 <MotionBox
                   initial={{ opacity: 0, y: 10 }}
@@ -107,17 +115,11 @@ export default function HeroSection() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    width: 78,
+                    width: { xs: "100%", md: 78 },
                     textAlign: "center",
                   }}
                 >
-                  <Box
-                    sx={{
-                      color: "var(--primary)",
-                      mb: 0.75,
-                      "& svg": { fontSize: 22 },
-                    }}
-                  >
+                  <Box sx={{ color: "var(--primary)", mb: 0.75, "& svg": { fontSize: 22 } }}>
                     {f.icon}
                   </Box>
                   <Typography
@@ -131,23 +133,27 @@ export default function HeroSection() {
                     {f.label}
                   </Typography>
                 </MotionBox>
-                {i < features.length - 1 && (
+                {i % 2 === 0 && (
                   <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)" }}
+                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
                   />
                 )}
-              </Box>
+                {i % 2 !== 0 && i < features.length - 1 && (
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
+                  />
+                )}
+              </Stack>
             ))}
-          </Stack>
+          </Box>
 
           <MotionButton
             onClick={() => router.push("/#courses")}
-            whileHover={{
-              scale: 1.03,
-              boxShadow: "0 8px 20px rgba(22,163,74,0.3)",
-            }}
+            whileHover={{ scale: 1.03, boxShadow: "0 8px 20px rgba(22,163,74,0.3)" }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             variant="contained"
@@ -169,10 +175,6 @@ export default function HeroSection() {
           </MotionButton>
         </MotionBox>
 
-        {/* Right image - large again, bleeding to the right edge of the viewport.
-            Big rounded corners on the left side blend it into the gradient panel,
-            and a soft leftward shadow does the "smooth transition from text to
-            image" instead of a hard seam. */}
         <MotionBox
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -180,8 +182,9 @@ export default function HeroSection() {
           sx={{
             position: "relative",
             flex: 1.3,
+            minWidth: 0,
             width: "100%",
-            minHeight: { xs: "300px", md: "480px" },
+            minHeight: { xs: "260px", md: "480px" },
           }}
         >
           <Box
@@ -192,7 +195,7 @@ export default function HeroSection() {
               position: "relative",
               display: "block",
               width: "100%",
-              height: { xs: "300px", md: "480px" },
+              height: { xs: "260px", md: "480px" },
               objectFit: "cover",
               borderRadius: { xs: "16px", md: "28px" },
               borderTopRightRadius: { md: 0 },

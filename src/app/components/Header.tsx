@@ -3,16 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  Typography,
-  Button,
-  Stack,
-  IconButton,
-  Drawer,
-} from "@mui/material";
+import { AppBar, Toolbar, Box, Typography, Button, Stack, IconButton, Drawer } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SchoolIcon from "@mui/icons-material/School";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -21,7 +12,7 @@ import { motion } from "framer-motion";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Appointment", href: "#appointment-form" }, // scrolls, doesn't route
+  { label: "Appointment", href: "/appointment" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -41,37 +32,15 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
-    setMenuOpen(false);
-
-    // In-page scroll for the Appointment link
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      const id = href.slice(1);
-      if (pathname === "/") {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        // If not on home page, go home then scroll after navigation
-        router.push(`/#${id}`);
-      }
-    }
-  };
-
   const renderLinks = (mobile = false) =>
     navLinks.map((link) => {
-      const isActive =
-        link.href.startsWith("#") ? false : pathname === link.href;
+      const isActive = pathname === link.href;
       return (
         <Box
           key={link.label}
           component={Link}
           href={link.href}
-          onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
-            handleNavClick(e, link.href)
-          }
+          onClick={() => setMenuOpen(false)}
           sx={{
             position: "relative",
             px: 2,
@@ -113,9 +82,13 @@ export default function Header() {
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       elevation={0}
       sx={{
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         bgcolor: "var(--white)",
         color: "var(--black)",
         border: "none",
@@ -135,7 +108,6 @@ export default function Header() {
           justifyContent: "space-between",
         }}
       >
-        {/* Logo */}
         <MotionBox
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
@@ -166,22 +138,12 @@ export default function Header() {
           </Typography>
         </MotionBox>
 
-        {/* Desktop nav */}
-        <Stack
-          direction="row"
-          spacing={0.5}
-          sx={{ display: { xs: "none", md: "flex" }, position: "relative" }}
-        >
+        <Stack direction="row" spacing={0.5} sx={{ display: { xs: "none", md: "flex" }, position: "relative" }}>
           {renderLinks(false)}
         </Stack>
 
-        {/* Desktop CTA */}
         <MotionButton
-          onClick={() =>
-            document
-              .getElementById("appointment-form")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
+          onClick={() => router.push("/appointment")}
           whileHover={{ scale: 1.04, boxShadow: "0 8px 20px rgba(22,163,74,0.35)" }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -203,7 +165,6 @@ export default function Header() {
           Book Now
         </MotionButton>
 
-        {/* Mobile hamburger */}
         <IconButton
           onClick={() => setMenuOpen(true)}
           sx={{
@@ -217,7 +178,6 @@ export default function Header() {
         </IconButton>
       </Toolbar>
 
-      {/* Mobile drawer */}
       <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
         <Box sx={{ width: 280, p: 2, display: "flex", flexDirection: "column", height: "100%" }}>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
@@ -233,9 +193,7 @@ export default function Header() {
               fullWidth
               onClick={() => {
                 setMenuOpen(false);
-                document
-                  .getElementById("appointment-form")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                router.push("/appointment");
               }}
               variant="contained"
               startIcon={<CalendarMonthIcon />}

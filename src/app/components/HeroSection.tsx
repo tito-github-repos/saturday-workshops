@@ -57,7 +57,6 @@ export default function HeroSection() {
           py: { xs: 5, md: 7 },
         }}
       >
-        {/* Left text content */}
         <MotionBox
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,7 +91,6 @@ export default function HeroSection() {
             Weekend workshops that empower you with practical skills and real-world confidence.
           </Typography>
 
-          {/* Features: 2x2 grid on mobile, single row on desktop */}
           <Box
             sx={{
               display: "grid",
@@ -139,24 +137,14 @@ export default function HeroSection() {
                   <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{
-                      mx: 0.5,
-                      my: 0.5,
-                      borderColor: "rgba(0,0,0,0.08)",
-                      display: { xs: "none", md: "block" },
-                    }}
+                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
                   />
                 )}
                 {i % 2 !== 0 && i < features.length - 1 && (
                   <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{
-                      mx: 0.5,
-                      my: 0.5,
-                      borderColor: "rgba(0,0,0,0.08)",
-                      display: { xs: "none", md: "block" },
-                    }}
+                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
                   />
                 )}
               </Stack>
@@ -170,7 +158,6 @@ export default function HeroSection() {
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             variant="contained"
             endIcon={<ArrowForwardIcon />}
-            fullWidth={false}
             sx={{
               bgcolor: "var(--primary)",
               color: "var(--white)",
@@ -188,7 +175,6 @@ export default function HeroSection() {
           </MotionButton>
         </MotionBox>
 
-        {/* Right image */}
         <MotionBox
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}

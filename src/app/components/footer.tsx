@@ -1,21 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Box,
-  Typography,
-  Stack,
-  IconButton,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, Stack, IconButton, Divider } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const socials = [
-  { icon: <FacebookIcon fontSize="small" />, href: "#", label: "Facebook" },
-  { icon: <InstagramIcon fontSize="small" />, href: "#", label: "Instagram" },
-  { icon: <LinkedInIcon fontSize="small" />, href: "#", label: "LinkedIn" },
+  { icon: <FacebookIcon fontSize="small" />, href: "https://www.facebook.com/", label: "Facebook" },
+  { icon: <InstagramIcon fontSize="small" />, href: "https://www.instagram.com/", label: "Instagram" },
+  { icon: <LinkedInIcon fontSize="small" />, href: "https://www.linkedin.com/company/90765852/admin/dashboard/", label: "LinkedIn" },
 ];
 
 const legalLinks = [
@@ -114,7 +108,6 @@ export default function Footer() {
           py: { xs: 4, md: 3.5 },
         }}
       >
-        {/* Desktop / tablet: single row */}
         <Box
           sx={{
             display: { xs: "none", md: "grid" },
@@ -143,7 +136,6 @@ export default function Footer() {
           </Box>
         </Box>
 
-        {/* Mobile: stacked, centered */}
         <Stack
           spacing={2.5}
           sx={{
@@ -154,9 +146,7 @@ export default function Footer() {
         >
           <SocialIcons />
 
-          <Divider
-            sx={{ width: "100%", borderColor: "rgba(255,255,255,0.08)" }}
-          />
+          <Divider sx={{ width: "100%", borderColor: "rgba(255,255,255,0.08)" }} />
 
           <LegalLinks fontSize="13px" />
 

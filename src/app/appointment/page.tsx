@@ -1,5 +1,5 @@
-import FormBooking from "../components/formbooking";
+import { redirect } from "next/navigation";
 
 export default function AppointmentPage() {
-  return <FormBooking />;
+  redirect("/#appointment-form");
 }

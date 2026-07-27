@@ -39,7 +39,13 @@ const points = [
 
 export default function MentalCalisthenics() {
   return (
-    <Box sx={{ py: { xs: 3, md: 3 }, px: { xs: 2, md: 6 } }}>
+    <Box
+      sx={{
+        py: { xs: 3, md: 3 },
+        px: { xs: 2, md: 6 },
+        backgroundColor: "var(--white)",
+      }}
+    >
       <Grid
         container
         spacing={4}
@@ -75,11 +81,14 @@ export default function MentalCalisthenics() {
         {/* Right: content */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Stack spacing={2.5}>
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 700, color: "var(--black)" }}
+            >
               Mental Calisthenics Practice Book
             </Typography>
 
-            <Typography variant="body2" color="rgb(107, 114, 128)">
+            <Typography variant="body2" sx={{ color: "var(--black)" }}>
               Enhance your focus, think quickly, and become an efficient problem
               solver with our specially curated exercises.
             </Typography>
@@ -110,13 +119,21 @@ export default function MentalCalisthenics() {
                       {p.icon}
                     </Box>
                     <Box>
-                      <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ fontWeight: 700, color: "var(--black)" }}
+                      >
                         {p.text}
                       </Typography>
                       <Typography
                         variant="caption"
-                        color="text.secondary"
-                        sx={{ display: "block", mt: 0.3, lineHeight: 1.4 }}
+
+                        sx={{
+                          display: "block",
+                          mt: 0.3,
+                          lineHeight: 1.4,
+                          color: "text.secondary",
+                        }}
                       >
                         {p.subtext}
                       </Typography>

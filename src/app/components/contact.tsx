@@ -43,7 +43,7 @@ export default function GetInTouch() {
       sx={{
         py: { xs: 3, md: 3 },
         px: { xs: 2, md: 6 },
-        // background: "#f8fbfd",
+        background: "var(--white)",
       }}
     >
       <Stack

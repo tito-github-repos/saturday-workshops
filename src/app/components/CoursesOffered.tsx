@@ -105,7 +105,13 @@ const generalInfo = [
 export default function SaturdayWorkshops() {
   return (
     <div id="courses">
-      <Box sx={{ py: { xs: 3, md: 6 }, px: { xs: 2, md: 6 } }}>
+      <Box
+        sx={{
+          py: { xs: 3, md: 6 },
+          px: { xs: 2, md: 6 },
+          backgroundColor: "var(--white)",
+        }}
+      >
         {/* Section heading with decorative lines */}
         <Stack
           direction="row"
@@ -114,7 +120,7 @@ export default function SaturdayWorkshops() {
         >
           <Typography
             variant="h5"
-            sx={{ fontWeight: 700, fontSize: { xs: "1.5rem", md: "2rem" } }}
+            sx={{ fontWeight: 700, fontSize: { xs: "1.5rem", md: "2rem" }, color: "var(--black)" }}
           >
             Our{" "}
             <Box component="span" sx={{ color: "var(--primary)" }}>

@@ -117,19 +117,15 @@ const validationSchema = yup.object({
     .required("Phone number is required")
     .matches(/^\d+$/, "Phone number should only contain numbers")
     .length(10, "Phone number must be exactly 10 digits"),
- date: yup
+  date: yup
     .string()
     .trim()
     .required("Please select a date")
-    .test(
-      "not-in-past",
-      "Please select today or a future date",
-      (value) => {
-        if (!value) return false;
-        const todayStr = getTodayDateString();
-        return value >= todayStr; // safe string comparison since format is YYYY-MM-DD
-      }
-    ),
+    .test("not-in-past", "Please select today or a future date", (value) => {
+      if (!value) return false;
+      const todayStr = getTodayDateString();
+      return value >= todayStr; // safe string comparison since format is YYYY-MM-DD
+    }),
   course: yup.string().trim().required("Please select a course"),
   message: yup.string().optional(),
 });
@@ -244,28 +240,27 @@ export default function FormBooking() {
       sx={{
         py: { xs: 3, md: 3 },
         px: { xs: 2, md: 6 },
-        // background: "#f8fbfd",
+        background: "var(--white)",
       }}
     >
       <Grid container spacing={2.5}>
-
         {/* LEFT CARD */}
         <Grid size={{ xs: 12, lg: 7.5 }}>
-           {/* Success / Error Alert */}
-              <Collapse in={alert.open}>
-                <Alert
-                  severity={alert.severity}
-                  sx={{ mb: 2 }}
-                  onClose={() =>
-                    setAlert((prev) => ({
-                      ...prev,
-                      open: false,
-                    }))
-                  }
-                >
-                  {alert.message}
-                </Alert>
-              </Collapse>
+          {/* Success / Error Alert */}
+          <Collapse in={alert.open}>
+            <Alert
+              severity={alert.severity}
+              sx={{ mb: 2 }}
+              onClose={() =>
+                setAlert((prev) => ({
+                  ...prev,
+                  open: false,
+                }))
+              }
+            >
+              {alert.message}
+            </Alert>
+          </Collapse>
           <Card
             elevation={0}
             sx={{
@@ -291,8 +286,6 @@ export default function FormBooking() {
                   Book Your Slot
                 </Typography>
               </Stack>
-
-             
 
               <Grid container spacing={1.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>

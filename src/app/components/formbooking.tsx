@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import * as yup from "yup";
 import {
   Alert,
@@ -15,6 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 import PersonOutlineIcon from "@mui/icons-material/PersonOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -36,8 +37,6 @@ interface Benefit {
   color: string;
 }
 
-// Each benefit gets its own accent color again, drawn from the theme
-// (--primary, --secondary) plus a couple of complementary tones.
 const benefits: Benefit[] = [
   {
     title: "Practical & Interactive Sessions",
@@ -77,6 +76,7 @@ interface FormState {
   date: string;
   course: string;
   message: string;
+  website: string; // honeypot — must stay empty for real users
 }
 
 const initialFormState: FormState = {
@@ -86,11 +86,11 @@ const initialFormState: FormState = {
   date: "",
   course: "",
   message: "",
+  website: "",
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-// Returns today's date in YYYY-MM-DD format (required for input[type=date] min attr)
 const getTodayDateString = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -99,7 +99,6 @@ const getTodayDateString = () => {
   return `${year}-${month}-${day}`;
 };
 
-// Message is intentionally left out of "required" fields - it's optional.
 const validationSchema = yup.object({
   name: yup
     .string()
@@ -124,7 +123,7 @@ const validationSchema = yup.object({
     .test("not-in-past", "Please select today or a future date", (value) => {
       if (!value) return false;
       const todayStr = getTodayDateString();
-      return value >= todayStr; // safe string comparison since format is YYYY-MM-DD
+      return value >= todayStr;
     }),
   course: yup.string().trim().required("Please select a course"),
   message: yup.string().optional(),
@@ -144,12 +143,17 @@ export default function FormBooking() {
     message: "",
   });
 
+  // Turnstile token + ref — token is single-use, reset the widget after
+  // every submit attempt (success or failure).
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileError, setTurnstileError] = useState("");
+  const turnstileRef = useRef<TurnstileInstance>(null);
+
   const handleChange =
     (field: keyof FormState) =>
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       let value = event.target.value;
 
-      // Restrict input as the user types, in addition to the Yup validation on submit.
       if (field === "name") {
         value = value.replace(/[^A-Za-z\s]/g, "");
       } else if (field === "phone") {
@@ -164,29 +168,27 @@ export default function FormBooking() {
     };
 
   const handleSubmit = async () => {
-    setAlert({
-      open: false,
-      severity: "success",
-      message: "",
-    });
+    setAlert({ open: false, severity: "success", message: "" });
+    setTurnstileError("");
 
     try {
-      // Validate form
       await validationSchema.validate(formData, { abortEarly: false });
       setErrors({});
     } catch (validationErr: unknown) {
       if (validationErr instanceof yup.ValidationError) {
         const fieldErrors: FormErrors = {};
-
         validationErr.inner.forEach((issue) => {
           if (issue.path && !fieldErrors[issue.path as keyof FormState]) {
             fieldErrors[issue.path as keyof FormState] = issue.message;
           }
         });
-
         setErrors(fieldErrors);
       }
+      return;
+    }
 
+    if (!turnstileToken) {
+      setTurnstileError("Please complete the verification check.");
       return;
     }
 
@@ -195,35 +197,27 @@ export default function FormBooking() {
     try {
       const response = await fetch("/api/student-registration", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken,
+        }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setAlert({
-          open: true,
-          severity: "error",
-          message: result.message,
-        });
-
+        setAlert({ open: true, severity: "error", message: result.message });
+        turnstileRef.current?.reset();
+        setTurnstileToken("");
         return;
       }
 
-      setAlert({
-        open: true,
-        severity: "success",
-        message: result.message,
-      });
-
+      setAlert({ open: true, severity: "success", message: result.message });
       setFormData(initialFormState);
       setErrors({});
     } catch (err) {
       console.error(err);
-
       setAlert({
         open: true,
         severity: "error",
@@ -231,6 +225,8 @@ export default function FormBooking() {
       });
     } finally {
       setSubmitting(false);
+      turnstileRef.current?.reset();
+      setTurnstileToken("");
     }
   };
 
@@ -246,48 +242,53 @@ export default function FormBooking() {
       <Grid container spacing={2.5}>
         {/* LEFT CARD */}
         <Grid size={{ xs: 12, lg: 7.5 }}>
-          {/* Success / Error Alert */}
           <Collapse in={alert.open}>
             <Alert
               severity={alert.severity}
               sx={{ mb: 2 }}
-              onClose={() =>
-                setAlert((prev) => ({
-                  ...prev,
-                  open: false,
-                }))
-              }
+              onClose={() => setAlert((prev) => ({ ...prev, open: false }))}
             >
               {alert.message}
             </Alert>
           </Collapse>
+
           <Card
             elevation={0}
-            sx={{
-              borderRadius: 3,
-              border: "1px solid #e7edf4",
-              height: "100%",
-            }}
+            sx={{ borderRadius: 3, border: "1px solid #e7edf4", height: "100%" }}
           >
             <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ mb: 2, alignItems: "center" }}
-              >
-                <EventAvailableOutlinedIcon
-                  sx={{ color: "var(--primary)", fontSize: 24 }}
-                />
-
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, color: "#172554" }}
-                >
+              <Stack direction="row" spacing={1} sx={{ mb: 2, alignItems: "center" }}>
+                <EventAvailableOutlinedIcon sx={{ color: "var(--primary)", fontSize: 24 }} />
+                <Typography variant="h6" sx={{ fontWeight: 700, color: "#172554" }}>
                   Book Your Slot
                 </Typography>
               </Stack>
 
               <Grid container spacing={1.5}>
+                {/* Honeypot field — hidden from real users via CSS,
+                    bots that auto-fill every input will populate it */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    left: "-9999px",
+                    width: "1px",
+                    height: "1px",
+                    overflow: "hidden",
+                  }}
+                  aria-hidden="true"
+                >
+                  <TextField
+                    label="Website"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, website: e.target.value }))
+                    }
+                  />
+                </Box>
+
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     fullWidth
@@ -300,10 +301,7 @@ export default function FormBooking() {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <PersonOutlineIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#8a94a6" }}
-                          />
+                          <PersonOutlineIcon fontSize="small" sx={{ mr: 1, color: "#8a94a6" }} />
                         ),
                       },
                     }}
@@ -322,10 +320,7 @@ export default function FormBooking() {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <EmailOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#8a94a6" }}
-                          />
+                          <EmailOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#8a94a6" }} />
                         ),
                       },
                     }}
@@ -344,10 +339,7 @@ export default function FormBooking() {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <PhoneOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#8a94a6" }}
-                          />
+                          <PhoneOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#8a94a6" }} />
                         ),
                       },
                       htmlInput: { inputMode: "numeric" },
@@ -369,10 +361,7 @@ export default function FormBooking() {
                       htmlInput: { min: getTodayDateString() },
                       input: {
                         startAdornment: (
-                          <CalendarTodayOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#8a94a6" }}
-                          />
+                          <CalendarTodayOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#8a94a6" }} />
                         ),
                       },
                     }}
@@ -391,10 +380,7 @@ export default function FormBooking() {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <MenuBookOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#8a94a6" }}
-                          />
+                          <MenuBookOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#8a94a6" }} />
                         ),
                       },
                     }}
@@ -421,17 +407,32 @@ export default function FormBooking() {
                         startAdornment: (
                           <ChatBubbleOutlineOutlinedIcon
                             fontSize="small"
-                            sx={{
-                              mr: 1,
-                              mt: 1,
-                              alignSelf: "flex-start",
-                              color: "#8a94a6",
-                            }}
+                            sx={{ mr: 1, mt: 1, alignSelf: "flex-start", color: "#8a94a6" }}
                           />
                         ),
                       },
                     }}
                   />
+                </Grid>
+
+                {/* Cloudflare Turnstile */}
+                <Grid size={12}>
+                  <Turnstile
+                    ref={turnstileRef}
+                    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string}
+                    onSuccess={(token) => {
+                      setTurnstileToken(token);
+                      setTurnstileError("");
+                    }}
+                    onExpire={() => setTurnstileToken("")}
+                    onError={() => setTurnstileError("Verification failed. Please retry.")}
+                    options={{ theme: "light" }}
+                  />
+                  {turnstileError && (
+                    <Typography sx={{ color: "#d32f2f", fontSize: 12.5, mt: 1 }}>
+                      {turnstileError}
+                    </Typography>
+                  )}
                 </Grid>
 
                 <Grid size={12}>
@@ -449,11 +450,7 @@ export default function FormBooking() {
                       textTransform: "uppercase",
                       background: "var(--primary)",
                       boxShadow: "none",
-
-                      "&:hover": {
-                        background: "var(--primary)",
-                        filter: "brightness(0.92)",
-                      },
+                      "&:hover": { background: "var(--primary)", filter: "brightness(0.92)" },
                     }}
                   >
                     {submitting ? "Submitting..." : "Submit Booking"}
@@ -463,43 +460,20 @@ export default function FormBooking() {
             </CardContent>
           </Card>
         </Grid>
+
         {/* RIGHT CARD */}
         <Grid size={{ xs: 12, lg: 4.5 }}>
           <Card
             elevation={0}
-            sx={{
-              borderRadius: 3,
-              border: "1px solid #e7edf4",
-              background: "#f8fbfd",
-              height: "100%",
-            }}
+            sx={{ borderRadius: 3, border: "1px solid #e7edf4", background: "#f8fbfd", height: "100%" }}
           >
-            <CardContent
-              sx={{
-                p: { xs: 2, md: 3 },
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: "#172554", mb: 3 }}
-              >
+            <CardContent sx={{ p: { xs: 2, md: 3 }, height: "100%", display: "flex", flexDirection: "column" }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: "#172554", mb: 3 }}>
                 Why Join Our Workshops?
               </Typography>
-
-              <Stack
-                spacing={4}
-                sx={{ flex: 1, justifyContent: "space-between" }}
-              >
+              <Stack spacing={4} sx={{ flex: 1, justifyContent: "space-between" }}>
                 {benefits.map((item) => (
-                  <Stack
-                    key={item.title}
-                    direction="row"
-                    spacing={1.5}
-                    sx={{ alignItems: "flex-start" }}
-                  >
+                  <Stack key={item.title} direction="row" spacing={1.5} sx={{ alignItems: "flex-start" }}>
                     <Box
                       sx={{
                         width: 44,
@@ -515,23 +489,11 @@ export default function FormBooking() {
                     >
                       {item.icon}
                     </Box>
-
                     <Box>
-                      <Typography
-                        sx={{
-                          fontWeight: 700,
-                          fontSize: 14,
-                          color: "#172554",
-                        }}
-                      >
+                      <Typography sx={{ fontWeight: 700, fontSize: 14, color: "#172554" }}>
                         {item.title}
                       </Typography>
-
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mt: 0.3, fontSize: 13 }}
-                      >
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.3, fontSize: 13 }}>
                         {item.description}
                       </Typography>
                     </Box>

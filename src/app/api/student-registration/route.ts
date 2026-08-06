@@ -1,10 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import sanitizeHtml from "sanitize-html";
 import {
   sendAdminNotification,
   sendStudentConfirmation,
 } from "@/lib/email";
+
+/** Strips all HTML/script content, leaving plain text only. */
+function sanitizeText(value: string): string {
+  return sanitizeHtml(value, {
+    allowedTags: [],
+    allowedAttributes: {},
+  }).trim();
+}
+
+/** Verifies the Turnstile token with Cloudflare's siteverify endpoint. */
+async function verifyTurnstileToken(
+  token: string,
+  remoteIp?: string,
+): Promise<boolean> {
+  try {
+    const formData = new URLSearchParams();
+    formData.append("secret", process.env.TURNSTILE_SECRET_KEY as string);
+    formData.append("response", token);
+    if (remoteIp) formData.append("remoteip", remoteIp);
+
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      { method: "POST", body: formData },
+    );
+
+    const data = await res.json();
+    return data.success === true;
+  } catch (err) {
+    console.error("Turnstile verification error:", err);
+    return false; // fail closed
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,28 +50,71 @@ export async function POST(req: NextRequest) {
       date,
       course,
       message,
+      website,
+      turnstileToken,
     } = body;
 
-    // Validate required fields
+    // 1. Honeypot check — must run before anything else.
+    //    Real users never see or fill this field. Bots that auto-fill every
+    //    input on the page will populate it, letting us silently reject them.
+    if (typeof website === "string" && website.trim() !== "") {
+      return NextResponse.json({
+        success: true,
+        message: "Registration submitted successfully.",
+      });
+    }
+
+    // 2. Turnstile verification — never trust the client on this.
+    if (typeof turnstileToken !== "string" || !turnstileToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Verification token missing.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const remoteIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const isHuman = await verifyTurnstileToken(turnstileToken, remoteIp);
+
+    if (!isHuman) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Verification failed. Please try again.",
+        },
+        { status: 403 },
+      );
+    }
+
+    // 3. Validate required fields
     if (!name || !email || !phone || !date || !course) {
       return NextResponse.json(
         {
           success: false,
           message: "Please fill all required fields.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
+
+    // 4. Sanitize input before persisting
+    const sanitizedName = sanitizeText(name);
+    const sanitizedEmail = sanitizeText(email).toLowerCase();
+    const sanitizedPhone = sanitizeText(phone);
+    const sanitizedCourse = sanitizeText(course);
+    const sanitizedMessage = message ? sanitizeText(message) : null;
 
     // Save registration
     const registration = await prisma.studentRegistration.create({
       data: {
-        fullName: name.trim(),
-        email: email.trim().toLowerCase(),
-        phoneNumber: phone.trim(),
+        fullName: sanitizedName,
+        email: sanitizedEmail,
+        phoneNumber: sanitizedPhone,
         workshopDate: new Date(date),
-        course: course.trim(),
-        message: message?.trim() || null,
+        course: sanitizedCourse,
+        message: sanitizedMessage,
       },
     });
 
@@ -79,7 +155,7 @@ export async function POST(req: NextRequest) {
         message: "Registration submitted successfully.",
         data: registration,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Student Registration Error:", error);
@@ -94,7 +170,7 @@ export async function POST(req: NextRequest) {
           success: false,
           message: "This email is already registered.",
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -103,7 +179,7 @@ export async function POST(req: NextRequest) {
         success: false,
         message: "Something went wrong. Please try again later.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -11,9 +11,8 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import LocalCafeIcon from "@mui/icons-material/LocalCafe";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import GroupsIcon from "@mui/icons-material/Groups";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PersonIcon from "@mui/icons-material/Person";
 
 const workshops = [
@@ -34,8 +33,8 @@ const workshops = [
       "Phrase Structures",
       "Clause Structures",
     ],
-    price: "3,456",
-    frequency: "Every 2nd Saturday",
+    price: "23,000 / 32,000",
+    frequency: "All Saturdays",
     cardBg: "var(--primary-light)",
     accentColor: "var(--primary)",
     headerBg: "var(--primary-light)",
@@ -60,8 +59,8 @@ const workshops = [
       "Ratios & Mixtures",
       "Profit, Loss & Discounts",
     ],
-    price: "3,456",
-    frequency: "Every 4th Saturday",
+    price: "23,000 / 32,000",
+    frequency: "All Saturdays",
     cardBg: "var(--secondary-light)",
     accentColor: "var(--secondary)",
     headerBg: "var(--secondary-light)",
@@ -83,23 +82,10 @@ const generalInfoCard = {
   cardHoverColor: "rgb(37, 99, 235)",
 };
 
-const generalInfo = [
-  {
-    icon: <LocalCafeIcon sx={{ fontSize: 18 }} />,
-    label: "Inclusive:",
-    value: "Tea, Snacks & Lunch",
-  },
-  {
-    icon: <AccessTimeIcon sx={{ fontSize: 18 }} />,
-    label: "Time:",
-    value: "9:00 AM – 3:00 PM",
-  },
-  {
-    icon: <LocationOnIcon sx={{ fontSize: 18 }} />,
-    label: "Venue:",
-    value:
-      "Details will be shared via WhatsApp. Location will be within Chennai city.",
-  },
+// ---- On-site / institutional session fee details ----
+const onSiteFees = [
+  { amount: "Rs.23,000", detail: "For a group of less than 20 members." },
+  { amount: "Rs.32,000", detail: "For a group of 20–30 members." },
 ];
 
 export default function SaturdayWorkshops() {
@@ -131,6 +117,215 @@ export default function SaturdayWorkshops() {
         </Stack>
 
         <Grid container spacing={3}>
+          {/* General Info card (now first) */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Card
+              elevation={0}
+              sx={{
+                borderRadius: 3,
+                border: "2px solid #e5e7eb",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
+                transition: "0.22s",
+                "&:hover": {
+                  border: `2px solid ${generalInfoCard.cardHoverColor}`,
+                  transform: "translateY(-5px)",
+                  boxShadow: generalInfoCard.cardShadow,
+                },
+              }}
+            >
+              {/* Header block with background color, matches workshop cards */}
+              <Box sx={{ bgcolor: generalInfoCard.headerBg, p: 2, pb: 1.75 }}>
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  sx={{ alignItems: "center" }}
+                >
+                  <Avatar
+                    sx={{
+                      borderRadius: "30%",
+                      background: generalInfoCard.badgeBg,
+                      color: generalInfoCard.badgeColor,
+                      fontWeight: 700,
+                      width: 38,
+                      height: 38,
+                      border: generalInfoCard.badgeBorder,
+                      boxShadow: generalInfoCard.badgeShadow,
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src="/Icons/info-icon.svg"
+                      alt="Info icon"
+                      sx={{
+                        width: "40%",
+                        height: "40%",
+                        objectFit: "contain",
+                        filter:
+                          "brightness(0) saturate(100%) invert(29%) sepia(94%) saturate(1955%) hue-rotate(211deg) brightness(94%) contrast(96%)",
+                      }}
+                    />
+                  </Avatar>
+                  <Box>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        fontWeight: 700,
+                        lineHeight: 1.3,
+                        color: generalInfoCard.titleColor,
+                      }}
+                    >
+                      General Info
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: generalInfoCard.subTitleColor,
+                        fontSize: { xs: "0.8rem", md: "0.7rem" },
+                      }}
+                    >
+                      (Applicable to both Workshops)
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+
+              {/* Full-width divider, matches workshop cards */}
+              <Divider sx={{ border: "1px solid #e5e7eb" }} />
+
+              {/* Rest of card content */}
+              <Box
+                sx={{
+                  p: 2,
+                  pt: 1.75,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ fontSize: 13, color: "text.secondary", mb: 1.5 }}
+                >
+                  If any academic institution, government office, private
+                  company, or association wants to conduct the sessions in
+                  their premises, the fees are mentioned as below:
+                </Typography>
+
+                <Stack spacing={1} sx={{ mb: 1.5 }}>
+                  {onSiteFees.map((fee) => (
+                    <Stack
+                      key={fee.amount}
+                      direction="row"
+                      spacing={1.25}
+                      sx={{
+                        alignItems: "center",
+                        bgcolor: generalInfoCard.headerBg,
+                        borderRadius: 2,
+                        p: 1,
+                      }}
+                    >
+                      <Avatar
+                        sx={{
+                          borderRadius: "30%",
+                          background: generalInfoCard.badgeBg,
+                          color: generalInfoCard.badgeColor,
+                          border: generalInfoCard.badgeBorder,
+                          boxShadow: generalInfoCard.badgeShadow,
+                          width: 34,
+                          height: 34,
+                        }}
+                      >
+                        <CurrencyRupeeIcon sx={{ fontSize: 16 }} />
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 700,
+                            color: generalInfoCard.titleColor,
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {fee.amount}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{ fontSize: 12, color: "text.secondary" }}
+                        >
+                          {fee.detail}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  ))}
+                </Stack>
+
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  sx={{
+                    alignItems: "center",
+                    border: `1px dashed ${generalInfoCard.cardHoverColor}`,
+                    borderRadius: 2,
+                    p: 1,
+                    mb: 1.5,
+                  }}
+                >
+                  <GroupsIcon
+                    sx={{ color: generalInfoCard.titleColor, fontSize: 18 }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ fontSize: 13, fontWeight: 600 }}
+                  >
+                    It is a 5–6 hours session.
+                  </Typography>
+                </Stack>
+
+                <Divider sx={{ mb: 1.5 }} />
+
+                {/* Trainer strip */}
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  sx={{ alignItems: "center" }}
+                >
+                  <Avatar
+                    sx={{
+                      color: generalInfoCard.badgeBg,
+                      bgcolor: generalInfoCard.badgeColor,
+                      border: generalInfoCard.badgeBorder,
+                      width: 32,
+                      height: 32,
+                    }}
+                  >
+                    <PersonIcon sx={{ fontSize: 16 }} />
+                  </Avatar>
+                  <Box>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 700,
+                        lineHeight: 1.2,
+                        color: generalInfoCard.titleColor,
+                      }}
+                    >
+                      KaniSelvam Paraman
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ fontSize: 11.5 }}
+                    >
+                      Trainer
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Card>
+          </Grid>
+
           {/* Workshop cards */}
           {workshops.map((w) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={w.title}>
@@ -287,163 +482,6 @@ export default function SaturdayWorkshops() {
               </Card>
             </Grid>
           ))}
-
-          {/* General Info card */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Card
-              elevation={0}
-              sx={{
-                borderRadius: 3,
-                border: "2px solid #e5e7eb",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                overflow: "hidden",
-                transition: "0.22s",
-                "&:hover": {
-                  border: `2px solid ${generalInfoCard.cardHoverColor}`,
-                  transform: "translateY(-5px)",
-                  boxShadow: generalInfoCard.cardShadow,
-                },
-              }}
-            >
-              {/* Header block with background color, matches workshop cards */}
-              <Box sx={{ bgcolor: generalInfoCard.headerBg, p: 3, pb: 2.5 }}>
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  sx={{ alignItems: "flex-start" }}
-                >
-                  <Avatar
-                    sx={{
-                      borderRadius: "30%",
-                      background: generalInfoCard.badgeBg,
-                      color: generalInfoCard.badgeColor,
-                      fontWeight: 700,
-                      fontSize: { xs: 14, md: 18 },
-                      width: { xs: 40, md: 50 },
-                      height: { xs: 40, md: 50 },
-                      border: generalInfoCard.badgeBorder,
-                      boxShadow: generalInfoCard.badgeShadow,
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src="/Icons/info-icon.svg"
-                      alt="Info icon"
-                      sx={{
-                        width: "40%",
-                        height: "40%",
-                        objectFit: "contain",
-                        filter:
-                          "brightness(0) saturate(100%) invert(29%) sepia(94%) saturate(1955%) hue-rotate(211deg) brightness(94%) contrast(96%)",
-                      }}
-                    />
-                  </Avatar>
-                  <Box>
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        fontWeight: 700,
-                        color: generalInfoCard.titleColor,
-                      }}
-                    >
-                      General Info
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        mt: 0.5,
-                        color: generalInfoCard.subTitleColor,
-                        fontSize: { xs: "0.875rem", md: "0.75rem" },
-                        cursor: "pointer",
-                      }}
-                    >
-                      (Applicable to both Workshops)
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Box>
-
-              {/* Full-width divider, matches workshop cards */}
-              <Divider sx={{ border: "1px solid #e5e7eb" }} />
-
-              {/* Rest of card content */}
-              <Box
-                sx={{
-                  p: 3,
-                  pt: 2.5,
-                  flexGrow: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Stack spacing={1.5} sx={{ mb: 2, flexGrow: 1 }}>
-                  {generalInfo.map((item) => (
-                    <Stack
-                      direction="row"
-                      spacing={1.5}
-                      key={item.label}
-                      sx={{ alignItems: "flex-start" }}
-                    >
-                      <Box sx={{ color: generalInfoCard.titleColor, mt: 0.2 }}>
-                        {item.icon}
-                      </Box>
-                      <Typography variant="body2">
-                        <Box component="span" sx={{ fontWeight: 700 }}>
-                          {item.label}
-                        </Box>{" "}
-                        {item.value}
-                      </Typography>
-                    </Stack>
-                  ))}
-                </Stack>
-
-                {/* Trainer info box, styled like the price/frequency row in workshop cards */}
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  sx={{
-                    alignItems: "center",
-                    bgcolor: generalInfoCard.headerBg,
-                    borderRadius: 2,
-                    p: 1.5,
-                  }}
-                >
-                  <Avatar
-                    sx={{
-                      color: generalInfoCard.badgeBg,
-                      bgcolor: generalInfoCard.badgeColor,
-                      border: generalInfoCard.badgeBorder,
-                      width: 36,
-                      height: 36,
-                    }}
-                  >
-                    <PersonIcon sx={{ fontSize: 18 }} />
-                  </Avatar>
-                  <Box>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontWeight: 700,
-                        color: generalInfoCard.titleColor,
-                      }}
-                    >
-                      KaniSelvam Paraman
-                    </Typography>
-
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{ display: "block", fontSize: 12 }}
-                    >
-                      Trainer
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Card>
-          </Grid>
         </Grid>
       </Box>
     </div>

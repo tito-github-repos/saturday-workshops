@@ -71,7 +71,7 @@ export default function HeroSection() {
               color: "var(--black)",
             }}
           >
-            Where The Focus Goes,
+            Where  Focus Goes,
             <br />
             <Box component="span" sx={{ color: "var(--primary)" }}>
               Energy Flows.

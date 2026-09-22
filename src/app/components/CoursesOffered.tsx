@@ -33,7 +33,7 @@ const workshops = [
       "Phrase Structures",
       "Clause Structures",
     ],
-    price: "23,000 / 32,000",
+    price: "22,000 /-",
     frequency: "All Saturdays",
     cardBg: "var(--primary-light)",
     accentColor: "var(--primary)",
@@ -59,7 +59,7 @@ const workshops = [
       "Ratios & Mixtures",
       "Profit, Loss & Discounts",
     ],
-    price: "23,000 / 32,000",
+    price: "22,000 /-",
     frequency: "All Saturdays",
     cardBg: "var(--secondary-light)",
     accentColor: "var(--secondary)",
@@ -84,8 +84,8 @@ const generalInfoCard = {
 
 // ---- On-site / institutional session fee details ----
 const onSiteFees = [
-  { amount: "Rs.23,000", detail: "For a group of less than 20 members." },
-  { amount: "Rs.32,000", detail: "For a group of 20–30 members." },
+  { amount: "Rs.22,222", detail: "For a group of less than 30 members." },
+  { amount: "Rs.9,999", detail: "For a one-to-one session." },
 ];
 
 export default function SaturdayWorkshops() {

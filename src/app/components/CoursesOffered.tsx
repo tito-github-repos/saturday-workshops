@@ -15,6 +15,9 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PersonIcon from "@mui/icons-material/Person";
 
+// Shared header style so every card header has the same height
+const HEADER_MIN_HEIGHT = 72;
+
 const workshops = [
   {
     badge: "Aa",
@@ -40,6 +43,80 @@ const workshops = [
     headerBg: "var(--primary-light)",
     cardShadow: "rgba(22, 163, 74, 0.133) 0px 20px 48px",
     cardHoverColor: "rgb(22, 163, 74)",
+  },
+  {
+    badge: "VOC",
+    badgeColor: "#ea580c",
+    badgeBg: "var(--white)",
+    badgeBorder: "1px solid rgb(254, 215, 170)",
+    badgeShadow: "rgba(234, 88, 12, 0.094) 0px 2px 10px",
+    // title: "Competitive Exams English-1",
+    title: "One Day Vocabulary",
+    titleColor: "#ea580c",
+    subTitleColor: "rgb(107, 114, 128)",
+    description: "Phonemes. Morphemes.",
+    learnItems: [
+      "Vocabulary based Questions",
+      "Word Families",
+      "Word Groups",
+      "Structure Class",
+      "Form Class",
+      "Idioms",
+      "Phrasal Verbs",
+      "Language Devices",
+    ],
+    price: "22,222 /-",
+    frequency: "All Saturdays",
+    cardBg: "#fff7ed",
+    accentColor: "#ea580c",
+    headerBg: "#fff7ed",
+    cardShadow: "rgba(234, 88, 12, 0.133) 0px 20px 48px",
+    cardHoverColor: "rgb(234, 88, 12)",
+  },
+  {
+    badge: "GRA",
+    badgeColor: "#0d9488",
+    badgeBg: "var(--white)",
+    badgeBorder: "1px solid rgb(153, 246, 228)",
+    badgeShadow: "rgba(13, 148, 136, 0.094) 0px 2px 10px",
+    // title: "Competitive Exams English-2",
+    title: "One Day Grammar Rules",
+    titleColor: "#0d9488",
+    subTitleColor: "rgb(107, 114, 128)",
+    description: "Syntax. Semantics.",
+    learnItems: [
+      "Grammar Rules based Questions",
+      "Forms",
+      "Functions",
+      "Structures",
+    ],
+    price: "22,222 /-",
+    frequency: "All Saturdays",
+    cardBg: "#f0fdfa",
+    accentColor: "#0d9488",
+    headerBg: "#f0fdfa",
+    cardShadow: "rgba(13, 148, 136, 0.133) 0px 20px 48px",
+    cardHoverColor: "rgb(13, 148, 136)",
+  },
+  {
+    badge: "RC",
+    badgeColor: "#e11d48",
+    badgeBg: "var(--white)",
+    badgeBorder: "1px solid rgb(254, 205, 211)",
+    badgeShadow: "rgba(225, 29, 72, 0.094) 0px 2px 10px",
+    // title: "Competitive Exams English-3",
+    title: "One Day RC",
+    titleColor: "#e11d48",
+    subTitleColor: "rgb(107, 114, 128)",
+    description: "Ideas. Expression. Communication.",
+    learnItems: ["Reading Comprehension Techniques", "Reading Principles"],
+    price: "22,222 /-",
+    frequency: "All Saturdays",
+    cardBg: "#fff1f2",
+    accentColor: "#e11d48",
+    headerBg: "#fff1f2",
+    cardShadow: "rgba(225, 29, 72, 0.133) 0px 20px 48px",
+    cardHoverColor: "rgb(225, 29, 72)",
   },
   {
     badge: "123",
@@ -136,8 +213,16 @@ export default function SaturdayWorkshops() {
                 },
               }}
             >
-              {/* Header block with background color, matches workshop cards */}
-              <Box sx={{ bgcolor: generalInfoCard.headerBg, p: 2, pb: 1.75 }}>
+              {/* Header block - same height as workshop cards */}
+              <Box
+                sx={{
+                  bgcolor: generalInfoCard.headerBg,
+                  p: 2,
+                  minHeight: HEADER_MIN_HEIGHT,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <Stack
                   direction="row"
                   spacing={1.25}
@@ -186,7 +271,7 @@ export default function SaturdayWorkshops() {
                         fontSize: { xs: "0.8rem", md: "0.7rem" },
                       }}
                     >
-                      (Applicable to both Workshops)
+                      (Applicable to every Workshops)
                     </Typography>
                   </Box>
                 </Stack>
@@ -200,13 +285,14 @@ export default function SaturdayWorkshops() {
                 sx={{
                   p: 2,
                   pt: 1.75,
+                  flexGrow: 1,
                   display: "flex",
                   flexDirection: "column",
                 }}
               >
                 <Typography
                   variant="body2"
-                  sx={{ fontSize: 13, color: "text.secondary", mb: 1.5 }}
+                  sx={{ fontSize: 12, color: "text.secondary", mb: 1.5 }}
                 >
                   If any academic institution, government office, private
                   company, or association wants to conduct the sessions in
@@ -245,14 +331,14 @@ export default function SaturdayWorkshops() {
                           sx={{
                             fontWeight: 700,
                             color: generalInfoCard.titleColor,
-                            lineHeight: 1.2,
+                            lineHeight: 1,
                           }}
                         >
                           {fee.amount}
                         </Typography>
                         <Typography
                           variant="caption"
-                          sx={{ fontSize: 12, color: "text.secondary" }}
+                          sx={{ fontSize: 11.5, color: "text.secondary" }}
                         >
                           {fee.detail}
                         </Typography>
@@ -277,51 +363,54 @@ export default function SaturdayWorkshops() {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ fontSize: 13, fontWeight: 600 }}
+                    sx={{ fontSize: 12.5, fontWeight: 600 }}
                   >
                     It is a 5–6 hours session.
                   </Typography>
                 </Stack>
 
-                <Divider sx={{ mb: 1.5 }} />
+                {/* Pinned to the bottom so the card fills the row height */}
+                <Box sx={{ mt: "auto" }}>
+                  <Divider sx={{ mb: 1.5 }} />
 
-                {/* Trainer strip */}
-                <Stack
-                  direction="row"
-                  spacing={1.25}
-                  sx={{ alignItems: "center" }}
-                >
-                  <Avatar
-                    sx={{
-                      color: generalInfoCard.badgeBg,
-                      bgcolor: generalInfoCard.badgeColor,
-                      border: generalInfoCard.badgeBorder,
-                      width: 32,
-                      height: 32,
-                    }}
+                  {/* Trainer strip */}
+                  <Stack
+                    direction="row"
+                    spacing={1.25}
+                    sx={{ alignItems: "center" }}
                   >
-                    <PersonIcon sx={{ fontSize: 16 }} />
-                  </Avatar>
-                  <Box>
-                    <Typography
-                      variant="body2"
+                    <Avatar
                       sx={{
-                        fontWeight: 700,
-                        lineHeight: 1.2,
-                        color: generalInfoCard.titleColor,
+                        color: generalInfoCard.badgeBg,
+                        bgcolor: generalInfoCard.badgeColor,
+                        border: generalInfoCard.badgeBorder,
+                        width: 32,
+                        height: 32,
                       }}
                     >
-                      KaniSelvam Paraman
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{ fontSize: 11.5 }}
-                    >
-                      Trainer
-                    </Typography>
-                  </Box>
-                </Stack>
+                      <PersonIcon sx={{ fontSize: 16 }} />
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 700,
+                          lineHeight: 1.1,
+                          color: generalInfoCard.titleColor,
+                        }}
+                      >
+                        KaniSelvam Paraman
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ fontSize: 11.5 }}
+                      >
+                        Trainer
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
               </Box>
             </Card>
           </Grid>
@@ -346,12 +435,20 @@ export default function SaturdayWorkshops() {
                   },
                 }}
               >
-                {/* Header block with background color */}
-                <Box sx={{ bgcolor: w.headerBg, p: 3, pb: 2.5 }}>
+                {/* Compact header - same as General Info */}
+                <Box
+                  sx={{
+                    bgcolor: w.headerBg,
+                    p: 2,
+                    minHeight: HEADER_MIN_HEIGHT,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <Stack
                     direction="row"
-                    spacing={1.5}
-                    sx={{ alignItems: "flex-start" }}
+                    spacing={1.25}
+                    sx={{ alignItems: "center" }}
                   >
                     <Avatar
                       sx={{
@@ -359,9 +456,9 @@ export default function SaturdayWorkshops() {
                         background: w.badgeBg,
                         color: w.badgeColor,
                         fontWeight: 700,
-                        fontSize: { xs: 14, md: 18 },
-                        width: { xs: 40, md: 50 },
-                        height: { xs: 40, md: 50 },
+                        fontSize: 14,
+                        width: 38,
+                        height: 38,
                         border: w.badgeBorder,
                         boxShadow: w.badgeShadow,
                       }}
@@ -382,9 +479,8 @@ export default function SaturdayWorkshops() {
                       <Typography
                         variant="body2"
                         sx={{
-                          mt: 0.5,
                           color: w.subTitleColor,
-                          fontSize: { xs: "0.875rem", md: "0.75rem" },
+                          fontSize: { xs: "0.8rem", md: "0.7rem" },
                         }}
                       >
                         {w.description}
@@ -393,14 +489,13 @@ export default function SaturdayWorkshops() {
                   </Stack>
                 </Box>
 
-                {/* Full-width divider between header and "You'll Learn" */}
                 <Divider sx={{ border: "1px solid #e5e7eb" }} />
 
                 {/* Rest of card content */}
                 <Box
                   sx={{
-                    p: 3,
-                    pt: 2.5,
+                    p: 2,
+                    pt: 1.75,
                     flexGrow: 1,
                     display: "flex",
                     flexDirection: "column",
@@ -418,7 +513,7 @@ export default function SaturdayWorkshops() {
                     You&apos;ll Learn:
                   </Typography>
 
-                  <Stack spacing={0.75} sx={{ mb: 2, flexGrow: 1 }}>
+                  <Stack spacing={0.6} sx={{ mb: 1.5, flexGrow: 1 }}>
                     {w.learnItems.map((item) => (
                       <Stack
                         direction="row"
@@ -429,7 +524,7 @@ export default function SaturdayWorkshops() {
                         <CheckCircleIcon
                           sx={{ color: w.accentColor, fontSize: 16 }}
                         />
-                        <Typography variant="body2" sx={{ fontSize: 13.5 }}>
+                        <Typography variant="body2" sx={{ fontSize: 13 }}>
                           {item}
                         </Typography>
                       </Stack>
@@ -444,7 +539,7 @@ export default function SaturdayWorkshops() {
                       justifyContent: "space-between",
                       bgcolor: w.cardBg,
                       borderRadius: 2,
-                      p: 1.5,
+                      p: 1.25,
                     }}
                   >
                     <Typography

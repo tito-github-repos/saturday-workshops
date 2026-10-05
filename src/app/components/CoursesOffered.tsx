@@ -8,11 +8,12 @@ import {
   Stack,
   Avatar,
   Divider,
+  Button,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GroupsIcon from "@mui/icons-material/Groups";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+// import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PersonIcon from "@mui/icons-material/Person";
 
 // Shared header style so every card header has the same height
@@ -160,10 +161,10 @@ const generalInfoCard = {
 };
 
 // ---- On-site / institutional session fee details ----
-const onSiteFees = [
-  { amount: "Rs.22,222", detail: "For a group of less than 30 members." },
-  { amount: "Rs.9,999", detail: "For a one-to-one session." },
-];
+// const onSiteFees = [
+//   { amount: "Rs.22,222", detail: "For a group of less than 30 members." },
+//   { amount: "Rs.9,999", detail: "For a one-to-one session." },
+// ];
 
 export default function SaturdayWorkshops() {
   return (
@@ -183,7 +184,11 @@ export default function SaturdayWorkshops() {
         >
           <Typography
             variant="h5"
-            sx={{ fontWeight: 700, fontSize: { xs: "1.5rem", md: "2rem" }, color: "var(--black)" }}
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "1.5rem", md: "2rem" },
+              color: "var(--black)",
+            }}
           >
             Our{" "}
             <Box component="span" sx={{ color: "var(--primary)" }}>
@@ -292,15 +297,16 @@ export default function SaturdayWorkshops() {
               >
                 <Typography
                   variant="body2"
-                  sx={{ fontSize: 12, color: "text.secondary", mb: 1.5 }}
+                  sx={{ fontSize: 12, color: "text.secondary", mb: 3 }}
                 >
                   If any academic institution, government office, private
-                  company, or association wants to conduct the sessions in
-                  their premises, the fees are mentioned as below:
+                  company, or association wants to conduct the sessions in their
+                  premises,contact us. We will discuss your requirements and
+                  share the details.
                 </Typography>
 
                 <Stack spacing={1} sx={{ mb: 1.5 }}>
-                  {onSiteFees.map((fee) => (
+                  {/* {onSiteFees.map((fee) => (
                     <Stack
                       key={fee.amount}
                       direction="row"
@@ -344,7 +350,26 @@ export default function SaturdayWorkshops() {
                         </Typography>
                       </Box>
                     </Stack>
-                  ))}
+                  ))} */}
+
+                    <Button
+                    href="#contact"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      mb: 1.5,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      color: generalInfoCard.titleColor,
+                      borderColor: generalInfoCard.cardHoverColor,
+                      "&:hover": {
+                        borderColor: generalInfoCard.cardHoverColor,
+                        bgcolor: generalInfoCard.headerBg,
+                      },
+                    }}
+                  >
+                    Contact Us
+                  </Button>
                 </Stack>
 
                 <Stack
@@ -367,6 +392,8 @@ export default function SaturdayWorkshops() {
                   >
                     It is a 5–6 hours session.
                   </Typography>
+
+                
                 </Stack>
 
                 {/* Pinned to the bottom so the card fills the row height */}

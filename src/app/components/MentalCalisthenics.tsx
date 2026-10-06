@@ -9,6 +9,16 @@ import Link from "next/link";
 
 const points = [
   {
+    icon: <TrackChangesOutlinedIcon sx={{ fontSize: 20 }} />,
+    text: "Sharpen Focus",
+    subtext: "Build better concentration and accuracy",
+  },
+  {
+    icon: <TipsAndUpdatesIcon sx={{ fontSize: 20 }} />,
+    text: "Practice Smart",
+    subtext: "Daily practice worksheets to boost your skills",
+  },
+  {
     icon: (
       <Box
         component="img"
@@ -24,16 +34,6 @@ const points = [
     ),
     text: "Improve Mental Agility",
     subtext: "Strengthen your brain with targeted exercises",
-  },
-  {
-    icon: <TrackChangesOutlinedIcon sx={{ fontSize: 20 }} />,
-    text: "Sharpen Focus",
-    subtext: "Build better concentration and accuracy",
-  },
-  {
-    icon: <TipsAndUpdatesIcon sx={{ fontSize: 20 }} />,
-    text: "Practice Smart",
-    subtext: "Daily practice worksheets to boost your skills",
   },
 ];
 

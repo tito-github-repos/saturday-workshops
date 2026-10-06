@@ -301,7 +301,7 @@ export default function SaturdayWorkshops() {
                 >
                   If any academic institution, government office, private
                   company, or association wants to conduct the sessions in their
-                  premises.
+                  premises,contact us.
                 </Typography>
 
                 <Stack spacing={1} sx={{ mb: 1.5 }}>

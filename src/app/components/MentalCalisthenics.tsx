@@ -11,7 +11,7 @@ const points = [
   {
     icon: <TrackChangesOutlinedIcon sx={{ fontSize: 20 }} />,
     text: "Lens Focus",
-    subtext: "Laser-sharp attention, zero distractions",
+    // subtext: "Laser-sharp attention, zero distractions",
   },
   {
     icon: (
@@ -28,12 +28,12 @@ const points = [
       />
     ),
     text: "Elephant Memory",
-    subtext: "Remember more, forget less",
+    // subtext: "Remember more, forget less",
   },
   {
     icon: <BoltOutlinedIcon sx={{ fontSize: 20 }} />,
     text: "Razor Sharp",
-    subtext: "Quick thinking, faster solving",
+    // subtext: "Quick thinking, faster solving",
   },
 ];
 
@@ -99,7 +99,7 @@ export default function MentalCalisthenics() {
                   <Stack
                     direction="row"
                     spacing={1.2}
-                    sx={{ alignItems: "flex-start" }}
+                    sx={{ alignItems: "center" }}
                   >
                     <Box
                       sx={{
@@ -113,7 +113,6 @@ export default function MentalCalisthenics() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        mt: 0.3,
                       }}
                     >
                       {p.icon}
@@ -125,7 +124,7 @@ export default function MentalCalisthenics() {
                       >
                         {p.text}
                       </Typography>
-                      <Typography
+                      {/* <Typography
                         variant="caption"
                         sx={{
                           display: "block",
@@ -135,7 +134,7 @@ export default function MentalCalisthenics() {
                         }}
                       >
                         {p.subtext}
-                      </Typography>
+                      </Typography> */}
                     </Box>
                   </Stack>
                 </Grid>

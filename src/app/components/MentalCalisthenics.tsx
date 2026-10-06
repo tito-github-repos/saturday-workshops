@@ -3,27 +3,22 @@
 import { Box, Typography, Grid, Stack, Button } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import TrackChangesOutlinedIcon from "@mui/icons-material/TrackChangesOutlined";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
+import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import Image from "next/image";
 import Link from "next/link";
 
 const points = [
   {
     icon: <TrackChangesOutlinedIcon sx={{ fontSize: 20 }} />,
-    text: "Sharpen Focus",
-    subtext: "Build better concentration and accuracy",
-  },
-  {
-    icon: <TipsAndUpdatesIcon sx={{ fontSize: 20 }} />,
-    text: "Practice Smart",
-    subtext: "Daily practice worksheets to boost your skills",
+    text: "Lens Focus",
+    subtext: "Laser-sharp attention, zero distractions",
   },
   {
     icon: (
       <Box
         component="img"
         src="/Icons/innovative-brain-icon.svg"
-        alt="Mental agility icon"
+        alt="Elephant memory icon"
         sx={{
           width: 20,
           height: 20,
@@ -32,8 +27,13 @@ const points = [
         }}
       />
     ),
-    text: "Improve Mental Agility",
-    subtext: "Strengthen your brain with targeted exercises",
+    text: "Elephant Memory",
+    subtext: "Remember more, forget less",
+  },
+  {
+    icon: <BoltOutlinedIcon sx={{ fontSize: 20 }} />,
+    text: "Razor Sharp",
+    subtext: "Quick thinking, faster solving",
   },
 ];
 
@@ -69,7 +69,7 @@ export default function MentalCalisthenics() {
             }}
           >
             <Image
-              src="/img/mental.webp"
+              src="/img/Mental_1.webp"
               alt="Mental Calisthenics Practice Book"
               fill
               sizes="(max-width: 900px) 100vw, 40vw"
@@ -127,7 +127,6 @@ export default function MentalCalisthenics() {
                       </Typography>
                       <Typography
                         variant="caption"
-
                         sx={{
                           display: "block",
                           mt: 0.3,

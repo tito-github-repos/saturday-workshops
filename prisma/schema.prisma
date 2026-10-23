@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -12,14 +10,60 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 model StudentRegistration {
-  id          Int      @id @default(autoincrement())
-  fullName    String
-  email       String   @unique
-  phoneNumber String
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  phoneNumber  String
   workshopDate DateTime
-  course      String
-  message     String?  @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  course       String
+  message      String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  payments    Payment[]
+   course_enrollment        Course_Enrollment[]
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+  EXPIRED
+}
+
+// One row per Razorpay order.
+// Retry within 24h  -> same row is reused (attempts +1, updatedAt changes).
+// Retry after 24h   -> old row becomes EXPIRED, a new row is created.
+model Payment {
+  id                Int                 @id @default(autoincrement())
+  studentId         Int
+  student           StudentRegistration @relation(fields: [studentId], references: [id])
+  courseSlug        String
+  amount            Int                 // in paise (2222 * 100 = 222200)
+  currency          String              @default("INR")
+  razorpayOrderId   String              @unique
+  razorpayPaymentId String?             @unique
+  razorpaySignature String?
+  status            PaymentStatus       @default(CREATED)
+  attempts          Int                 @default(1)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  course_enrollment        Course_Enrollment?
+
+  @@index([studentId, courseSlug, status])
+}
+
+// One-time purchase: one row per student per course. No validity / end date.
+model Course_Enrollment {
+  id         Int                 @id @default(autoincrement())
+  studentId  Int
+  student    StudentRegistration @relation(fields: [studentId], references: [id])
+  courseSlug String
+  paymentId  Int                 @unique
+  payment    Payment             @relation(fields: [paymentId], references: [id])
+  enrolledAt DateTime            @default(now())
+
+  @@unique([studentId, courseSlug])
 }

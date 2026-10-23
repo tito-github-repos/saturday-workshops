@@ -1,3 +1,4 @@
+//src\app\api\student-registration\route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
@@ -168,7 +169,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "This email is already registered.",
+          message: "This email is already registered. You can pay for a workshop using the Pay Now button.",
         },
         { status: 409 },
       );

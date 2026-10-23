@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -13,14 +14,17 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GroupsIcon from "@mui/icons-material/Groups";
-// import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PersonIcon from "@mui/icons-material/Person";
+import PaymentIcon from "@mui/icons-material/Payment";
+import { COURSES, type CourseSlug } from "@/lib/courses";
+import PayNowModal from "./Paynowmodal";
 
 // Shared header style so every card header has the same height
 const HEADER_MIN_HEIGHT = 72;
 
 const workshops = [
   {
+    slug: "english-language-design" as CourseSlug,
     badge: "Aa",
     badgeColor: "var(--primary)",
     badgeBg: "var(--white)",
@@ -37,7 +41,6 @@ const workshops = [
       "Phrase Structures",
       "Clause Structures",
     ],
-    price: "22,222 /-",
     frequency: "All Saturdays",
     cardBg: "var(--primary-light)",
     accentColor: "var(--primary)",
@@ -46,12 +49,12 @@ const workshops = [
     cardHoverColor: "rgb(22, 163, 74)",
   },
   {
+    slug: "one-day-vocabulary" as CourseSlug,
     badge: "VOC",
     badgeColor: "#ea580c",
     badgeBg: "var(--white)",
     badgeBorder: "1px solid rgb(254, 215, 170)",
     badgeShadow: "rgba(234, 88, 12, 0.094) 0px 2px 10px",
-    // title: "Competitive Exams English-1",
     title: "One Day Vocabulary",
     titleColor: "#ea580c",
     subTitleColor: "rgb(107, 114, 128)",
@@ -66,7 +69,6 @@ const workshops = [
       "Phrasal Verbs",
       "Language Devices",
     ],
-    price: "22,222 /-",
     frequency: "All Saturdays",
     cardBg: "#fff7ed",
     accentColor: "#ea580c",
@@ -75,12 +77,12 @@ const workshops = [
     cardHoverColor: "rgb(234, 88, 12)",
   },
   {
+    slug: "one-day-grammar-rules" as CourseSlug,
     badge: "GRA",
     badgeColor: "#0d9488",
     badgeBg: "var(--white)",
     badgeBorder: "1px solid rgb(153, 246, 228)",
     badgeShadow: "rgba(13, 148, 136, 0.094) 0px 2px 10px",
-    // title: "Competitive Exams English-2",
     title: "One Day Grammar Rules",
     titleColor: "#0d9488",
     subTitleColor: "rgb(107, 114, 128)",
@@ -91,7 +93,6 @@ const workshops = [
       "Functions",
       "Structures",
     ],
-    price: "22,222 /-",
     frequency: "All Saturdays",
     cardBg: "#f0fdfa",
     accentColor: "#0d9488",
@@ -100,18 +101,17 @@ const workshops = [
     cardHoverColor: "rgb(13, 148, 136)",
   },
   {
+    slug: "one-day-rc" as CourseSlug,
     badge: "RC",
     badgeColor: "#e11d48",
     badgeBg: "var(--white)",
     badgeBorder: "1px solid rgb(254, 205, 211)",
     badgeShadow: "rgba(225, 29, 72, 0.094) 0px 2px 10px",
-    // title: "Competitive Exams English-3",
     title: "One Day RC",
     titleColor: "#e11d48",
     subTitleColor: "rgb(107, 114, 128)",
     description: "Ideas. Expression. Communication.",
     learnItems: ["Reading Comprehension Techniques", "Reading Principles"],
-    price: "22,222 /-",
     frequency: "All Saturdays",
     cardBg: "#fff1f2",
     accentColor: "#e11d48",
@@ -120,6 +120,7 @@ const workshops = [
     cardHoverColor: "rgb(225, 29, 72)",
   },
   {
+    slug: "essential-math-skills" as CourseSlug,
     badge: "123",
     badgeColor: "var(--secondary)",
     badgeBg: "var(--white)",
@@ -137,7 +138,6 @@ const workshops = [
       "Ratios & Mixtures",
       "Profit, Loss & Discounts",
     ],
-    price: "22,222 /-",
     frequency: "All Saturdays",
     cardBg: "var(--secondary-light)",
     accentColor: "var(--secondary)",
@@ -160,13 +160,10 @@ const generalInfoCard = {
   cardHoverColor: "rgb(37, 99, 235)",
 };
 
-// ---- On-site / institutional session fee details ----
-// const onSiteFees = [
-//   { amount: "Rs.22,222", detail: "For a group of less than 30 members." },
-//   { amount: "Rs.9,999", detail: "For a one-to-one session." },
-// ];
-
 export default function SaturdayWorkshops() {
+  // Which course's Pay Now modal is open (null = closed)
+  const [payCourse, setPayCourse] = useState<CourseSlug | null>(null);
+
   return (
     <div id="courses">
       <Box
@@ -176,7 +173,7 @@ export default function SaturdayWorkshops() {
           backgroundColor: "var(--white)",
         }}
       >
-        {/* Section heading with decorative lines */}
+        {/* Section heading */}
         <Stack
           direction="row"
           spacing={2}
@@ -199,7 +196,7 @@ export default function SaturdayWorkshops() {
         </Stack>
 
         <Grid container spacing={3}>
-          {/* General Info card (now first) */}
+          {/* General Info card (first) */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Card
               elevation={0}
@@ -218,7 +215,6 @@ export default function SaturdayWorkshops() {
                 },
               }}
             >
-              {/* Header block - same height as workshop cards */}
               <Box
                 sx={{
                   bgcolor: generalInfoCard.headerBg,
@@ -282,10 +278,8 @@ export default function SaturdayWorkshops() {
                 </Stack>
               </Box>
 
-              {/* Full-width divider, matches workshop cards */}
               <Divider sx={{ border: "1px solid #e5e7eb" }} />
 
-              {/* Rest of card content */}
               <Box
                 sx={{
                   p: 2,
@@ -305,53 +299,7 @@ export default function SaturdayWorkshops() {
                 </Typography>
 
                 <Stack spacing={1} sx={{ mb: 1.5 }}>
-                  {/* {onSiteFees.map((fee) => (
-                    <Stack
-                      key={fee.amount}
-                      direction="row"
-                      spacing={1.25}
-                      sx={{
-                        alignItems: "center",
-                        bgcolor: generalInfoCard.headerBg,
-                        borderRadius: 2,
-                        p: 1,
-                      }}
-                    >
-                      <Avatar
-                        sx={{
-                          borderRadius: "30%",
-                          background: generalInfoCard.badgeBg,
-                          color: generalInfoCard.badgeColor,
-                          border: generalInfoCard.badgeBorder,
-                          boxShadow: generalInfoCard.badgeShadow,
-                          width: 34,
-                          height: 34,
-                        }}
-                      >
-                        <CurrencyRupeeIcon sx={{ fontSize: 16 }} />
-                      </Avatar>
-                      <Box>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontWeight: 700,
-                            color: generalInfoCard.titleColor,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {fee.amount}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={{ fontSize: 11.5, color: "text.secondary" }}
-                        >
-                          {fee.detail}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  ))} */}
-
-                    <Button
+                  <Button
                     href="#contact"
                     variant="outlined"
                     size="small"
@@ -391,15 +339,12 @@ export default function SaturdayWorkshops() {
                   >
                     It is a 5–6 hours session.
                   </Typography>
-
-                
                 </Stack>
 
                 {/* Pinned to the bottom so the card fills the row height */}
                 <Box sx={{ mt: "auto" }}>
                   <Divider sx={{ mb: 1.5 }} />
 
-                  {/* Trainer strip */}
                   <Stack
                     direction="row"
                     spacing={1.25}
@@ -443,7 +388,7 @@ export default function SaturdayWorkshops() {
 
           {/* Workshop cards */}
           {workshops.map((w) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={w.title}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={w.slug}>
               <Card
                 elevation={0}
                 sx={{
@@ -461,7 +406,6 @@ export default function SaturdayWorkshops() {
                   },
                 }}
               >
-                {/* Compact header - same as General Info */}
                 <Box
                   sx={{
                     bgcolor: w.headerBg,
@@ -517,7 +461,6 @@ export default function SaturdayWorkshops() {
 
                 <Divider sx={{ border: "1px solid #e5e7eb" }} />
 
-                {/* Rest of card content */}
                 <Box
                   sx={{
                     p: 2,
@@ -572,14 +515,14 @@ export default function SaturdayWorkshops() {
                       variant="body1"
                       sx={{ fontWeight: 700, color: w.accentColor }}
                     >
-                      ₹ {w.price}{" "}
+                      ₹ {COURSES[w.slug].priceInr.toLocaleString("en-IN")} /-{" "}
                       <Typography
                         component="span"
                         variant="caption"
                         color="text.secondary"
                         sx={{ fontWeight: 400 }}
                       >
-                        only
+                        per person
                       </Typography>
                     </Typography>
                     <Stack
@@ -599,12 +542,36 @@ export default function SaturdayWorkshops() {
                       </Typography>
                     </Stack>
                   </Stack>
+
+                  {/* Pay Now: opens the email check + Razorpay modal */}
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    startIcon={<PaymentIcon fontSize="small" />}
+                    onClick={() => setPayCourse(w.slug)}
+                    sx={{
+                      mt: 1.5,
+                      textTransform: "none",
+                      fontWeight: 700,
+                      bgcolor: w.accentColor,
+                      boxShadow: "none",
+                      "&:hover": {
+                        bgcolor: w.accentColor,
+                        filter: "brightness(0.92)",
+                        boxShadow: "none",
+                      },
+                    }}
+                  >
+                    Pay Now
+                  </Button>
                 </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Box>
+
+      <PayNowModal courseSlug={payCourse} onClose={() => setPayCourse(null)} />
     </div>
   );
 }

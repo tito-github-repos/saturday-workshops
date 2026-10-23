@@ -124,7 +124,7 @@ export default function Footer() {
               letterSpacing: "0.01em",
             }}
           >
-            © 2025 Saturday Workshops. All Rights Reserved.
+            © 2026 Saturday Workshops. All Rights Reserved.
           </Typography>
 
           <Box sx={{ justifySelf: "center" }}>
@@ -151,7 +151,7 @@ export default function Footer() {
           <LegalLinks fontSize="13px" />
 
           <Typography sx={{ fontSize: "12px", opacity: 0.45 }}>
-            © 2025 Saturday Workshops. All Rights Reserved.
+            © 2026 Saturday Workshops. All Rights Reserved.
           </Typography>
         </Stack>
       </Box>

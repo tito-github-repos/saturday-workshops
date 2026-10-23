@@ -2,9 +2,9 @@
 // The server always takes the price from here, never from the browser.
 // One-time payment, per person, per course.
 export const COURSES = {
-  "english-language-design": { title: "English Language Design", priceInr: 1 },
-  "one-day-vocabulary": { title: "One Day Vocabulary", priceInr: 1 },
-  "one-day-grammar-rules": { title: "One Day Grammar Rules", priceInr: 1 },
+  "english-language-design": { title: "English Language Design", priceInr: 3333 },
+  "one-day-vocabulary": { title: "One Day Vocabulary", priceInr: 3333 },
+  "one-day-grammar-rules": { title: "One Day Grammar Rules", priceInr: 3333 },
   "one-day-rc": { title: "One Day RC", priceInr: 3333 },
   "essential-math-skills": { title: "Essential Math Skills", priceInr: 3333 },
 } as const;

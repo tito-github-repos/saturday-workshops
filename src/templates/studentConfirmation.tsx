@@ -1,3 +1,4 @@
+//src\templates\studentConfirmation.tsx
 import {
   Body,
   Container,
@@ -85,7 +86,8 @@ export default function StudentConfirmation({
           </Section>
 
           <Text>
-            Our team will contact you shortly with further details.If you have any questions, feel free to
+            Our team will contact you shortly with further details.
+            If you have any questions, feel free to
             contact Us.
           </Text>
 

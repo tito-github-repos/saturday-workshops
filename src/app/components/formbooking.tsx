@@ -66,7 +66,10 @@ const benefits: Benefit[] = [
 
 const courseOptions = [
   { value: "English Lanuage Design", label: "English Language Design" },
-  { value: "Essential Math Skill", label: "Essential Math Skill" },
+  { value: "One Day Vocabulary", label: "One Day Vocabulary" },
+  { value: "One Day Grammar Rules", label: "One Day Grammar Rules" },
+  { value: "One Day RC", label: "One Day RC" },
+  { value: "Essential Math Skills", label: "Essential Math Skills" },
 ];
 
 interface FormState {

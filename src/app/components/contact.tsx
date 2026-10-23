@@ -16,7 +16,7 @@ interface ContactInfoItem {
 const contactInfo: ContactInfoItem[] = [
   {
     title: "Call Us",
-    lines: ["+91 9499953256"],
+    lines: ["+91 9499953257"],
     icon: <PhoneOutlinedIcon fontSize="small" />,
   },
   {

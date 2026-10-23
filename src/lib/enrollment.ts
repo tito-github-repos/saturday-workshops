@@ -36,7 +36,23 @@ export async function activatePayment(params: {
         razorpaySignature: params.signature ?? null,
       },
     });
-    if (claimed.count === 0) return { ok: true as const, alreadyProcessed: true };
+
+    if (claimed.count === 0) {
+      // Another path (e.g. the webhook) activated this payment first.
+      // If verify brings the payment signature, fill it in now.
+      if (params.signature) {
+        await tx.payment.updateMany({
+          where: {
+            id: payment.id,
+            status: "PAID",
+            razorpaySignature: null,
+            razorpayPaymentId: params.paymentId,
+          },
+          data: { razorpaySignature: params.signature },
+        });
+      }
+      return { ok: true as const, alreadyProcessed: true };
+    }
 
     // Student already enrolled (two orders were paid): keep the first
     // enrollment, no second email. The extra payment needs a manual refund.

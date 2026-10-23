@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <DisableCopy />
+          {/* <DisableCopy /> */}
           <Header />
           <main style={{ paddingTop: "65px" }}>{children}</main>
           <Footer />

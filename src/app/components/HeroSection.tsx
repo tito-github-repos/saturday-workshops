@@ -61,7 +61,12 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          sx={{ flex: 1, minWidth: 0, width: "100%", maxWidth: { md: "440px" } }}
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            width: "100%",
+            maxWidth: { md: "560px" },
+          }}
         >
           <Typography
             sx={{
@@ -69,9 +74,10 @@ export default function HeroSection() {
               fontWeight: 800,
               lineHeight: 1.15,
               color: "var(--black)",
+              whiteSpace: { md: "nowrap" },
             }}
           >
-            Where  Focus Goes,
+            Where Focus Goes,
             <br />
             <Box component="span" sx={{ color: "var(--primary)" }}>
               Energy Flows.
@@ -88,13 +94,17 @@ export default function HeroSection() {
               lineHeight: 1.5,
             }}
           >
-            Weekend workshops that empower you with practical skills and real-world confidence.
+            Weekend workshops that empower you with practical skills and
+            real-world confidence.
           </Typography>
 
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, auto)" },
+              gridTemplateColumns: {
+                xs: "repeat(2, 1fr)",
+                md: "repeat(4, auto)",
+              },
               columnGap: { xs: 2, md: 0 },
               rowGap: { xs: 2.5, md: 0 },
               mb: 3.5,
@@ -119,7 +129,13 @@ export default function HeroSection() {
                     textAlign: "center",
                   }}
                 >
-                  <Box sx={{ color: "var(--primary)", mb: 0.75, "& svg": { fontSize: 22 } }}>
+                  <Box
+                    sx={{
+                      color: "var(--primary)",
+                      mb: 0.75,
+                      "& svg": { fontSize: 22 },
+                    }}
+                  >
                     {f.icon}
                   </Box>
                   <Typography
@@ -137,14 +153,24 @@ export default function HeroSection() {
                   <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
+                    sx={{
+                      mx: 0.5,
+                      my: 0.5,
+                      borderColor: "rgba(0,0,0,0.08)",
+                      display: { xs: "none", md: "block" },
+                    }}
                   />
                 )}
                 {i % 2 !== 0 && i < features.length - 1 && (
                   <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{ mx: 0.5, my: 0.5, borderColor: "rgba(0,0,0,0.08)", display: { xs: "none", md: "block" } }}
+                    sx={{
+                      mx: 0.5,
+                      my: 0.5,
+                      borderColor: "rgba(0,0,0,0.08)",
+                      display: { xs: "none", md: "block" },
+                    }}
                   />
                 )}
               </Stack>
@@ -153,7 +179,10 @@ export default function HeroSection() {
 
           <MotionButton
             onClick={() => router.push("/#courses")}
-            whileHover={{ scale: 1.03, boxShadow: "0 8px 20px rgba(22,163,74,0.3)" }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 8px 20px rgba(22,163,74,0.3)",
+            }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             variant="contained"

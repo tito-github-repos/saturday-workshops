@@ -7,6 +7,9 @@ export default function DisableCopy() {
   useEffect(() => {
     const blockContextMenu = (e: MouseEvent) => e.preventDefault();
     const blockKeys = (e: KeyboardEvent) => {
+      // Autofill can fire keydown events with no `key`
+      if (typeof e.key !== 'string') return;
+
       const key = e.key.toLowerCase();
       const blockedCombo =
         (e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'p'].includes(key);

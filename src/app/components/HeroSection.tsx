@@ -90,12 +90,16 @@ export default function HeroSection() {
               color: "rgba(0,0,0,0.55)",
               mt: 1.5,
               mb: 3,
-              maxWidth: "380px",
+              maxWidth: "460px",
               lineHeight: 1.5,
             }}
           >
-            Weekend workshops that empower you with practical skills and
-            real-world confidence.
+            {/* Weekend workshops that empower you with practical skills and
+            real-world confidence. */}
+            Practical and pragmatic skills turn abstract knowledge into
+            real-world action, helping you solve problems, adapt to change, and
+            handle daily obstacles with less stress. <br />
+            Saturdayworkshops conducts such workshops on Saturdays.
           </Typography>
 
           <Box

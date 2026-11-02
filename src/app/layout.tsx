@@ -6,7 +6,7 @@ import Footer from "@/app/components/footer";
 import DisableCopy from "./components/DisableCopy";
 
 export const metadata: Metadata = {
-  title: "Saturday Workshop",
+  title: "SaturdayWorkshops-Life Skills Learning",
   description: "We're here to help you succeed",
 };
 

@@ -5,7 +5,7 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/footer";
 
 export const metadata: Metadata = {
-  title: "Saturday Workshop",
+  title: "SaturdayWorkshops-Life Skills Learning",
   description: "We're here to help you succeed",
 };
 

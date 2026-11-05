@@ -91,7 +91,13 @@ export async function POST(req: Request) {
     amount,
     currency: "INR",
     receipt: `rcpt_${Date.now()}`,
-    notes: { studentId: String(student.id), courseSlug },
+    notes: {
+      name: student.fullName,
+      email: student.email,
+      website: "Saturday Workshops",
+      course: courseSlug,
+      studentId: String(student.id),
+    },
   });
 
   await prisma.payment.create({
